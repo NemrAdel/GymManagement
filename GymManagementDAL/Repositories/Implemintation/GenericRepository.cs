@@ -1,4 +1,5 @@
 ﻿using GymManagementDAL.Repositories.Interfaces;
+using GymManagmentDAL.Data.Context;
 using GymManagmentDAL.Models;
 using System;
 using System.Collections.Generic;
@@ -10,29 +11,43 @@ namespace GymManagementDAL.Repositories.Implemintation
 {
     internal class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, new()
     {
+        private readonly GymDbContext _dbContext;
+
+        public GenericRepository(GymDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         public int Add(T entity)
         {
-            throw new NotImplementedException();
+            _dbContext.Set<T>().Add(entity);
+            return _dbContext.SaveChanges();
         }
 
         public IEnumerable<T> GetAll(int id)
         {
-            throw new NotImplementedException();
+            return _dbContext.Set<T>().ToList();
         }
 
         public T? GetById(int id)
         {
-            throw new NotImplementedException();
+            return _dbContext.Set<T>().Find(id);
         }
 
-        public T? Remove(T entity)
+        public int Delete(T entity)
         {
-            throw new NotImplementedException();
+            _dbContext.Set<T>().Remove(entity);
+            return _dbContext.SaveChanges();
         }
 
         public int Update(T entity)
         {
-            throw new NotImplementedException();
+            _dbContext.Set<T>().Update(entity);
+            return _dbContext.SaveChanges();
+        }
+
+        int? IGenericRepository<T>.Delete(T entity)
+        {
+            return Delete(entity);
         }
     }
 }

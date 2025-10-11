@@ -18,11 +18,6 @@ namespace GymManagmentDAL.Repositories.Implemintation
             
             _dbContext = dbContext;
         }
-        public int Add(Plan plan)
-        {
-            _dbContext.Plans.Add(plan);
-            return _dbContext.SaveChanges();
-        }
 
         public IEnumerable<Plan> GetAllPlans()
         {
@@ -34,13 +29,6 @@ namespace GymManagmentDAL.Repositories.Implemintation
             return _dbContext.Plans.Find(id);
         }
 
-        public int Remove(int id)
-        {
-            var plan = GetPlanById(id);
-            if (plan == null) return 0;
-            _dbContext.Plans.Remove(plan);
-            return _dbContext.SaveChanges();
-        }
 
         public int Update(Plan plan)
         {

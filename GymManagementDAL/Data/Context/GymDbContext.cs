@@ -18,6 +18,8 @@ namespace GymManagmentDAL.Data.Context
         {
             
         }
+
+
         //override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
         //    optionsBuilder.UseSqlServer("Server=NemrLap;Database=GymManagment;Trusted_Connection=True;TrustServerCertificate=True;");
