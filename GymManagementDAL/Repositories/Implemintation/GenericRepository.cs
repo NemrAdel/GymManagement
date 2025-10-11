@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Repositories.Implemintation
 {
-    internal class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, new()
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, new()
     {
         private readonly GymDbContext _dbContext;
 
@@ -48,6 +48,11 @@ namespace GymManagementDAL.Repositories.Implemintation
         int? IGenericRepository<T>.Delete(T entity)
         {
             return Delete(entity);
+        }
+
+        public IEnumerable<T> GetAll()
+        {
+            throw new NotImplementedException();
         }
     }
 }

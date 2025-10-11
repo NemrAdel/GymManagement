@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Repositories.Interfaces
 {
-    internal interface IGenericRepository<T>where T: BaseEntity, new()
+    public interface IGenericRepository<T>where T: BaseEntity, new()
     {
         T? GetById(int id);
 
-        IEnumerable<T> GetAll(int id);
+        IEnumerable<T> GetAll();
 
         int Add(T entity);
         int Update(T entity);
