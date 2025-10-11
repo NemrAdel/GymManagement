@@ -9,17 +9,24 @@ using System.Threading.Tasks;
 
 namespace GymManagmentDAL.Data.Context
 {
-    internal class GymDbContext : DbContext
+    public class GymDbContext : DbContext
     {
-        override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
+
+
+        public GymDbContext(DbContextOptions<GymDbContext> options):base(options)
         {
-            optionsBuilder.UseSqlServer("Server=NemrLap;Database=GymManagment;Trusted_Connection=True;TrustServerCertificate=True;");
-            if (optionsBuilder.IsConfigured)
-            {
-                Console.WriteLine("Successfull Connecting :)");
-            }
-            else Console.WriteLine("Failed Connection :(");
+            
         }
+        //override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Server=NemrLap;Database=GymManagment;Trusted_Connection=True;TrustServerCertificate=True;");
+        //    if (optionsBuilder.IsConfigured)
+        //    {
+        //        Console.WriteLine("Successfull Connecting :)");
+        //    }
+        //    else Console.WriteLine("Failed Connection :(");
+        //}
         override protected void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

@@ -11,8 +11,14 @@ namespace GymManagmentDAL.Repositories.Implemintation
 {
     internal class MemberRepository : IMemberRepository
     {
+        private readonly GymDbContext _dbContext;
+        public MemberRepository(GymDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
 
-        private readonly GymDbContext _dbContext  = new GymDbContext();
+
+        //private readonly GymDbContext _dbContext  = new GymDbContext();
         public int Add(Member member)
         {
             _dbContext.Members.Add(member);
