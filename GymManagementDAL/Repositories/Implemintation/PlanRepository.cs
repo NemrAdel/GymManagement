@@ -11,11 +11,12 @@ namespace GymManagmentDAL.Repositories.Implemintation
 {
     internal class PlanRepository : IPlanRepository
     {
-        public readonly GymDbContext _dbContext = new GymDbContext();
-        public int Add(Plan plan)
+        private readonly GymDbContext _dbContext;
+
+        public PlanRepository(GymDbContext dbContext)
         {
-            _dbContext.Plans.Add(plan);
-            return _dbContext.SaveChanges();
+            
+            _dbContext = dbContext;
         }
 
         public IEnumerable<Plan> GetAllPlans()
@@ -28,13 +29,6 @@ namespace GymManagmentDAL.Repositories.Implemintation
             return _dbContext.Plans.Find(id);
         }
 
-        public int Remove(int id)
-        {
-            var plan = GetPlanById(id);
-            if (plan == null) return 0;
-            _dbContext.Plans.Remove(plan);
-            return _dbContext.SaveChanges();
-        }
 
         public int Update(Plan plan)
         {

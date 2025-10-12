@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GymManagmentDAL.Models
 {
-    internal class Member: GymUser
+    public class Member: GymUser
     {
         //join date == created at
         public string Photo { get; set; }
