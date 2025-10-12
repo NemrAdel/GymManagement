@@ -20,6 +20,8 @@ namespace GymManagementBLL.BusinessServices.Implemintation
         {
             _memebrRepository = memebrRepository;
         }
+
+
         public IEnumerable<MemberViewModel> GetAllMembers()
         {
             var members = _memebrRepository.GetAll();
@@ -50,9 +52,9 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             #region Manual Second Approach
             var MembersViewModels = members.Select(m => new MemberViewModel
             {
-                Id=m.Id,
-                Name=m.Name,
-                Email=m.Email,
+                Id = m.Id,
+                Name = m.Name,
+                Email = m.Email,
                 Phone = m.Phone,
                 Photo = m.Photo,
                 Gender = m.Gender.ToString()
@@ -60,6 +62,48 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             });
             return MembersViewModels;
             #endregion
+        }
+
+
+        public bool CreateMember(CreateMemberViewModel createMember)
+        {
+            // Email Not Exist Before
+            // Phone Not Exist Before
+            var EmailExist = _memebrRepository.GetAll(x => x.Email == createMember.Email).Any();
+            var PhoneExist = _memebrRepository.GetAll(x => x.Phone == createMember.Phone).Any();
+
+            if (EmailExist || PhoneExist) return false;
+
+
+            // Create MemberViewModel => Member
+
+            var member = new Member
+            {
+                Name = createMember.Name,
+                Email = createMember.Email,
+                Phone = createMember.Phone,
+                DateOfBirth = createMember.DateOfBirth,
+                Gender =createMember.Gender,
+                Address =
+                {
+                    BuildingNumber = createMember.BuildingNumber,
+                    City = createMember.City,
+                    Street = createMember.Street
+                },
+                HealthRecord=new HealthRecord
+                {
+                    Height = createMember.HealthRecord.Height,
+                    Weight = createMember.HealthRecord.Weight,
+                    BloodType = createMember.HealthRecord.BloodType,
+                    Note = createMember.HealthRecord.Note,
+                }
+                
+
+            };
+            // add to database
+            return _memebrRepository.Add(member)>0;
+            
+
         }
     }
 }

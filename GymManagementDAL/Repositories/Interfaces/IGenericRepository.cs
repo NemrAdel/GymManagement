@@ -11,11 +11,11 @@ namespace GymManagementDAL.Repositories.Interfaces
     {
         T? GetById(int id);
 
-        IEnumerable<T> GetAll();
+        IEnumerable<T> GetAll(Func<T,bool>? condition=null);
 
         int Add(T entity);
         int Update(T entity);
-        int? Delete(T entity);
+        int Delete(T entity);
 
     }
 }

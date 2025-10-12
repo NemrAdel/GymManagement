@@ -1,6 +1,7 @@
 ﻿using GymManagementDAL.Repositories.Interfaces;
 using GymManagmentDAL.Data.Context;
 using GymManagmentDAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,10 +23,12 @@ namespace GymManagementDAL.Repositories.Implemintation
             _dbContext.Set<T>().Add(entity);
             return _dbContext.SaveChanges();
         }
-
-        public IEnumerable<T> GetAll(int id)
+        public IEnumerable<T> GetAll(Func<T, bool>? condition = null)
         {
-            return _dbContext.Set<T>().ToList();
+            if (condition is null)
+                return _dbContext.Set<T>().AsNoTracking().ToList();
+            else
+                return _dbContext.Set<T>().AsNoTracking().Where(condition).ToList();
         }
 
         public T? GetById(int id)
@@ -45,14 +48,7 @@ namespace GymManagementDAL.Repositories.Implemintation
             return _dbContext.SaveChanges();
         }
 
-        int? IGenericRepository<T>.Delete(T entity)
-        {
-            return Delete(entity);
-        }
 
-        public IEnumerable<T> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }
