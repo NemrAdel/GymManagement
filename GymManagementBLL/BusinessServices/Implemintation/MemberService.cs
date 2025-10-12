@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 namespace GymManagementBLL.BusinessServices.Implemintation
 {
-    internal class MemberSerives : IMemberService
+    internal class MemberService : IMemberService
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public MemberSerives(IUnitOfWork unitOfWork)
+        public MemberService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
