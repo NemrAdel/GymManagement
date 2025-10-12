@@ -12,6 +12,6 @@ namespace GymManagementDAL.UnitOfWork
     {
         IGenericRepository<T> GetRepository<T>()where T : BaseEntity, new();
 
-        int saveChanges();
+        int SaveChanges();
     }
 }

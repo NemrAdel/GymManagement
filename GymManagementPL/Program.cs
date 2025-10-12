@@ -1,5 +1,6 @@
 using GymManagementDAL.Repositories.Implemintation;
 using GymManagementDAL.Repositories.Interfaces;
+using GymManagementDAL.UnitOfWork;
 using GymManagmentDAL.Data.Context;
 using GymManagmentDAL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -23,8 +24,8 @@ namespace GymManagementPL
 
 
             //Dependency Injection for Repositories and Services 
-            builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
-
+            //builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
+            builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 
 
 

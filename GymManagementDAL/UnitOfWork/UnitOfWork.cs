@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.UnitOfWork
 {
-    internal class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly Dictionary<Type, object> _repositories=new ();
         private readonly GymDbContext _dbContext;
@@ -38,7 +38,7 @@ namespace GymManagementDAL.UnitOfWork
             return newRepository;
         }
 
-        public int saveChanges()
+        public int SaveChanges()
         {
             return _dbContext.SaveChanges();
         }
