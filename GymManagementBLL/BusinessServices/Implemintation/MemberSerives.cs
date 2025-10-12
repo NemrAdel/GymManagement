@@ -19,14 +19,20 @@ namespace GymManagementBLL.BusinessServices.Implemintation
         private readonly IGenericRepository<MemberShip> _membershiprepository;
         private readonly IPlanRepository _planRepository;
         private readonly IGenericRepository<HealthRecord> _healtRecordRepository;
+        private readonly IGenericRepository<MemberSessions> _memerSessionRepository;
+        private readonly IGenericRepository<Session> _sessionRepository;
 
         public MemberSerives(IGenericRepository<Member> memebrRepository, IGenericRepository<MemberShip> membershiprepository
-            , IPlanRepository planRepository, IGenericRepository<HealthRecord> healtRecordRepository)
+            , IPlanRepository planRepository, IGenericRepository<HealthRecord> healtRecordRepository
+            ,IGenericRepository<MemberSessions> memerSessionRepository
+            ,IGenericRepository<Session> sessionRepository)
         {
             _memebrRepository = memebrRepository;
             _membershiprepository = membershiprepository;
             _planRepository = planRepository;
             _healtRecordRepository = healtRecordRepository;
+            _memerSessionRepository = memerSessionRepository;
+            _sessionRepository = sessionRepository;
         }
 
 
@@ -191,7 +197,7 @@ namespace GymManagementBLL.BusinessServices.Implemintation
                 member.Address.BuildingNumber = memberToUpdate.BuildingNumber;
                 member.Address.City = memberToUpdate.City;
                 member.Address.Street = memberToUpdate.Street;
-                member.UpdatedAt = DateTime.Now;
+                member.UpdatedAt = DateTime.Now; // the updatedAt was allow null in database , createdAt was auto
 
                 return _memebrRepository.Update(member) > 0;
             }
@@ -203,6 +209,32 @@ namespace GymManagementBLL.BusinessServices.Implemintation
 
 
         }
+        public bool RemoveMember(int memberId)
+        {
+            try
+            {
+                var member = _memebrRepository.GetById(memberId);
+                if (member is null) return false;
+
+                var MemberSessionsId = _memerSessionRepository
+                    .GetAll(x => x.MemberId == memberId)
+                    .Select(x => x.SessionId);
+
+                var hasFutureSessions = _sessionRepository
+                    .GetAll(x => MemberSessionsId.Contains(x.Id) && x.StartDate > DateTime.Now)
+                    .Any();
+
+                if (hasFutureSessions) return false;
+
+                return _memebrRepository.Delete(member) > 0;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+
+        }
         private bool IsEmailExist(string email)
         {
             return _memebrRepository.GetAll(x => x.Email == email).Any();
@@ -211,5 +243,6 @@ namespace GymManagementBLL.BusinessServices.Implemintation
         {
             return _memebrRepository.GetAll(x => x.Phone == phone).Any();
         } // to use in phone and email validation as short method
+
     }
 }
