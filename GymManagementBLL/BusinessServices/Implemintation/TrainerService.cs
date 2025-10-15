@@ -5,6 +5,7 @@ using GymManagmentDAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -97,7 +98,7 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             try
             {
                 var trainer = _unitOfWork.GetRepository<Trainer>().GetById(trainerId);
-                if (trainer is null) return false;
+                if (trainer is null || HasActiveSessions(trainerId)) return false;
                 _unitOfWork.GetRepository<Trainer>().Delete(trainer);
                 return _unitOfWork.SaveChanges() > 0;
             }
@@ -147,5 +148,13 @@ namespace GymManagementBLL.BusinessServices.Implemintation
         {
             return _unitOfWork.GetRepository<Member>().GetAll(x => x.Phone == phone).Any();
         } // to use in phone and email validation as short method
+
+
+        private bool HasActiveSessions(int trainerId)
+        {
+            var hasActiveSessions = _unitOfWork.GetRepository<Session>()
+                .GetAll(x => x.TrainerId == trainerId && x.EndDate >= DateTime.Now);
+            return hasActiveSessions.Any();
+        }
     }
 }
