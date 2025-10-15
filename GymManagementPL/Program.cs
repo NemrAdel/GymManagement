@@ -1,6 +1,7 @@
 using GymManagementDAL.Repositories.Implemintation;
 using GymManagementDAL.Repositories.Interfaces;
 using GymManagementDAL.UnitOfWork;
+using GymManagementPL.Mapping;
 using GymManagmentDAL.Data.Context;
 using GymManagmentDAL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ namespace GymManagementPL
             var builder = WebApplication.CreateBuilder(args);
 
             #region Dependency Injection
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
@@ -29,6 +31,8 @@ namespace GymManagementPL
             builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 
             builder.Services.AddScoped(typeof(ISessionRepository),typeof(SessionRepository));
+
+            builder.Services.AddAutoMapper(X=>X.AddProfile(new MappingProfile()));
             #endregion
 
             var app = builder.Build();
