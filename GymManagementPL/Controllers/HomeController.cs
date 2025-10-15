@@ -1,32 +1,42 @@
-using System.Diagnostics;
-using GymManagementPL.Models;
+﻿using GymManagmentDAL.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymManagementPL.Controllers
 {
-    public class HomeController : Controller
-    {
-        private readonly ILogger<HomeController> _logger;
+    public class HomeController : Controller // specify for view returning , baseController for API
+    {                                       // end with controller will not be Methods it will be Actions
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
 
-        public IActionResult Index()
+        public ActionResult Index()
         {
             return View();
+            return NotFound();
+            return ContentResult();
+        }
+        public ViewResult Index()
+        {
+            return View(); // will search for view with same name as action in folder with same name as controller
+        }
+        public JsonResult TestData()
+        {
+            var trainer=new Trainer() { Phone = "01220818724", Name = "Ahmed" };
+            return Json(trainer);
+
+        }
+        public RedirectResult GotoGoogle()
+        {
+            return Redirect("https://www.google.com");
+        }
+        public ContentResult GetContent()
+        {
+            return Content("Hello from content result"); // , text/html
         }
 
-        public IActionResult Privacy()
+        public FileResult DownloadFileResult()
         {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot/css/site.css");
+            var fileBytes = System.IO.File.ReadAllBytes(filePath);  
+            return File(fileBytes,"text/css","TestName|Style.css");
         }
     }
 }
