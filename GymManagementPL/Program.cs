@@ -13,6 +13,7 @@ namespace GymManagementPL
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            #region Dependency Injection
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
@@ -27,11 +28,13 @@ namespace GymManagementPL
             //builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
             builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 
-
-
-
+            builder.Services.AddScoped(typeof(ISessionRepository),typeof(SessionRepository));
+            #endregion
 
             var app = builder.Build();
+
+            #region Configure Pipline [MidelWares]
+
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -50,7 +53,8 @@ namespace GymManagementPL
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")
-                .WithStaticAssets();
+                .WithStaticAssets(); 
+            #endregion
 
             app.Run();
         }
