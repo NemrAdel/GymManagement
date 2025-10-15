@@ -23,6 +23,15 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             _uinitOfWork = uinitOfWork;
             _mapper = mapper;
         }
+
+        public bool CreateSession(CreateSessionViewModel createSessionViewModel)
+        {
+          if (!IsTrainerExist(createSessionViewModel.TrainerId)) return false;
+          if (!IsCategoryExist(createSessionViewModel.TrainerId)) return false;
+          if (!IsDateTimeValid(createSessionViewModel.StartDate, createSessionViewModel.EndDate)) return false;
+          if(createSessionViewModel.Capacity>25 || createSessionViewModel.Capacity<0) return false;
+        }
+
         public IEnumerable<SessionViewModel> GetAllSessions()
         {
             var sessionRepo= _uinitOfWork.SessionsRepository;
@@ -79,5 +88,20 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             MappedSession.AvailableSlots = sessions.Capacity - sessionRepo.GetCountOfBookesSlots(sessions.Id);
             return MappedSession;
         }
+        #region HelperMethod
+        private bool  IsTrainerExist(int trainerId)
+        {
+            return _uinitOfWork.GetRepository<Trainer>().GetById(trainerId) is not null;
+        } 
+        private bool  IsCategoryExist(int categoryId)
+        {
+            return _uinitOfWork.GetRepository<Category>().GetById(categoryId) is not null;
+        } 
+
+        private bool IsDateTimeValid(DateTime start, DateTime end)
+        {
+            return start > DateTime.Now && end > start;
+        }
+        #endregion
     }
 }
