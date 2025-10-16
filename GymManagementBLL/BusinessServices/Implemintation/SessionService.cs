@@ -2,6 +2,7 @@
 using GymManagementBLL.BusinessServices.Interfaces;
 using GymManagementBLL.View_Models.SessionVM;
 using GymManagementDAL.UnitOfWork;
+using GymManagementSystemBLL.View_Models.SessionVm;
 using GymManagmentDAL.Models;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
@@ -26,10 +27,25 @@ namespace GymManagementBLL.BusinessServices.Implemintation
 
         public bool CreateSession(CreateSessionViewModel createSessionViewModel)
         {
-          if (!IsTrainerExist(createSessionViewModel.TrainerId)) return false;
-          if (!IsCategoryExist(createSessionViewModel.TrainerId)) return false;
-          if (!IsDateTimeValid(createSessionViewModel.StartDate, createSessionViewModel.EndDate)) return false;
-          if(createSessionViewModel.Capacity>25 || createSessionViewModel.Capacity<0) return false;
+            try
+            {
+                if (!IsTrainerExist(createSessionViewModel.TrainerId)) return false;
+                if (!IsCategoryExist(createSessionViewModel.TrainerId)) return false;
+                if (!IsDateTimeValid(createSessionViewModel.StartDate, createSessionViewModel.EndDate)) return false;
+                if (createSessionViewModel.Capacity > 25 || createSessionViewModel.Capacity < 0) return false;
+
+                //var mappedSessionToCreate = _mapper.Map<CreateSessionViewModel, Session>(createSessionViewModel);
+
+                var mappedSessionToCreate = _mapper.Map<Session>(createSessionViewModel);// here he know the source and 
+                
+                _uinitOfWork.GetRepository<Session>().Add(mappedSessionToCreate);
+                return _uinitOfWork.SaveChanges() > 0;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Create Failed");
+                return false;
+            }
         }
 
         public IEnumerable<SessionViewModel> GetAllSessions()
@@ -88,6 +104,28 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             MappedSession.AvailableSlots = sessions.Capacity - sessionRepo.GetCountOfBookesSlots(sessions.Id);
             return MappedSession;
         }
+
+
+        public UpdateSessionViewModel? GetSessionForUpdate(int sessionId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UpdateSession(int sessionId, UpdateSessionViewModel updateSessionViewModel)
+        {
+            var sessionRepo = _uinitOfWork.SessionsRepository;
+            var sessionToUpdate = sessionRepo.GetById(sessionId);
+
+            if (sessionToUpdate == null) return false;
+            if (!IsTrainerExist(updateSessionViewModel.TrainerId)) return false;
+            if (!IsDateTimeValid(updateSessionViewModel.StartDate, updateSessionViewModel.EndDate)) return false;
+
+            var MappedSessionToUpdate = _mapper.Map<UpdateSessionViewModel, Session>(sessionToUpdate);
+            sessionRepo.Update(MappedSessionToUpdate);
+            return _uinitOfWork.SaveChanges() > 0;
+
+        }
+
         #region HelperMethod
         private bool  IsTrainerExist(int trainerId)
         {
@@ -100,8 +138,12 @@ namespace GymManagementBLL.BusinessServices.Implemintation
 
         private bool IsDateTimeValid(DateTime start, DateTime end)
         {
-            return start > DateTime.Now && end > start;
+            return end > start;
         }
+
+
+
+
         #endregion
     }
 }

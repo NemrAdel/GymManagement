@@ -13,7 +13,7 @@ namespace GymManagementPL.Controllers
             return NotFound();
             return ContentResult();
         }
-        public ViewResult Index()
+        public ViewResult Index2()
         {
             return View(); // will search for view with same name as action in folder with same name as controller
         }

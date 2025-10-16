@@ -1,3 +1,4 @@
+using GymManagementDAL.Data.SeedDara;
 using GymManagementDAL.Repositories.Implemintation;
 using GymManagementDAL.Repositories.Interfaces;
 using GymManagementDAL.UnitOfWork;
@@ -36,6 +37,15 @@ namespace GymManagementPL
             #endregion
 
             var app = builder.Build();
+
+            using var scope = app.Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<GymDbContext>(); // expicit Injection
+            var pendingMigrations = dbContext.Database.GetPendingMigrations();
+            if (pendingMigrations?.Any()??false) 
+            {
+                dbContext.Database.Migrate();
+            }
+            GymDbContextSeeding.SeedData(dbContext);
 
             #region Configure Pipline [MidelWares]
 

@@ -19,4 +19,8 @@
     <ProjectReference Include="..\GymManagementDAL\GymManagementDAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mapping\" />
+  </ItemGroup>
+
 </Project>

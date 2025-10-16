@@ -19,9 +19,10 @@ namespace GymManagementDAL.UnitOfWork
         {
             _dbContext = dbContext;
             SessionsRepository = sessionsRepository;
-        }
+        }   
 
-        public ISessionRepository SessionsRepository ;
+        public ISessionRepository SessionsRepository { get; } 
+
 
         public IGenericRepository<T> GetRepository<T>() where T : BaseEntity, new()
         {

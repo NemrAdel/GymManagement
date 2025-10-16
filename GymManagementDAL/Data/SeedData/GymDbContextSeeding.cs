@@ -40,6 +40,7 @@ namespace GymManagementDAL.Data.SeedDara
             }
             catch (Exception)
             {
+                Console.WriteLine("Seeding Failed");
 
                 return false;
             }
@@ -51,7 +52,7 @@ namespace GymManagementDAL.Data.SeedDara
             if (!File.Exists(filePath)) return [];
             var jsonData = File.ReadAllText(filePath);
             var options =new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            return JsonSerializer.Deserialize<List<T>>(jsonData) ?? [];
+            return JsonSerializer.Deserialize<List<T>>(jsonData,options) ?? [];
         }// wwwRoot always exist in presentation layer
 
 
