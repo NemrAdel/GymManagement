@@ -1,4 +1,5 @@
 ﻿using GymManagmentDAL.Models;
+using GymManagmentDAL.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymManagementPL.Controllers
@@ -10,8 +11,8 @@ namespace GymManagementPL.Controllers
         public ActionResult Index()
         {
             return View();
-            return NotFound();
-            return ContentResult();
+            //return NotFound();
+            //return Redirect("https://www.google.com");
         }
         public ViewResult Index2()
         {
@@ -19,7 +20,13 @@ namespace GymManagementPL.Controllers
         }
         public JsonResult TestData()
         {
-            var trainer=new Trainer() { Phone = "01220818724", Name = "Ahmed" };
+            var trainer=new Trainer()
+            {
+                Id = 1,
+                Gender = Gender.Male,
+                Phone = "01220818724",
+                Name = "Ahmed" 
+            };
             return Json(trainer);
 
         }

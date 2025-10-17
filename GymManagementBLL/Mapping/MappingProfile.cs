@@ -19,8 +19,9 @@ namespace GymManagementPL.Mapping
                     options.Ignore()); // AvailableSlots will be set manually in the service
 
 
-            CreateMap<Session, CreateSessionViewModel>();
-            CreateMap<Session, UpdateSessionViewModel>();
+            CreateMap<CreateSessionViewModel, Session>();
+            CreateMap<Session, UpdateSessionViewModel>().ReverseMap();
+            //CreateMap<UpdateSessionViewModel, Session>();
         }
     }
 }

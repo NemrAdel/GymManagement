@@ -30,13 +30,13 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             try
             {
                 if (!IsTrainerExist(createSessionViewModel.TrainerId)) return false;
-                if (!IsCategoryExist(createSessionViewModel.TrainerId)) return false;
+                if (!IsCategoryExist(createSessionViewModel.CategoryId)) return false;
                 if (!IsDateTimeValid(createSessionViewModel.StartDate, createSessionViewModel.EndDate)) return false;
                 if (createSessionViewModel.Capacity > 25 || createSessionViewModel.Capacity < 0) return false;
 
                 //var mappedSessionToCreate = _mapper.Map<CreateSessionViewModel, Session>(createSessionViewModel);
 
-                var mappedSessionToCreate = _mapper.Map<Session>(createSessionViewModel);// here he know the source and 
+                var mappedSessionToCreate = _mapper.Map<Session>(createSessionViewModel);// here he know the source 
                 
                 _uinitOfWork.GetRepository<Session>().Add(mappedSessionToCreate);
                 return _uinitOfWork.SaveChanges() > 0;
@@ -106,24 +106,46 @@ namespace GymManagementBLL.BusinessServices.Implemintation
         }
 
 
-        public UpdateSessionViewModel? GetSessionForUpdate(int sessionId)
+        public UpdateSessionViewModel? GetSessionToUpdate(int sessionId)
         {
-            throw new NotImplementedException();
+            var sessionRepo = _uinitOfWork.SessionsRepository;
+            var sessionToUpdate = sessionRepo.GetById(sessionId);
+            if (!ISessionAvaliableForUpdate(sessionToUpdate!)) return null;
+            return _mapper.Map<Session, UpdateSessionViewModel>(sessionToUpdate!);
+             
         }
 
         public bool UpdateSession(int sessionId, UpdateSessionViewModel updateSessionViewModel)
         {
+            try
+            {
+                var sessionRepo = _uinitOfWork.SessionsRepository;
+                var sessionToUpdate = sessionRepo.GetById(sessionId);
+
+                if (!ISessionAvaliableForUpdate(sessionToUpdate!)) return false;
+                if (!IsTrainerExist(updateSessionViewModel.TrainerId)) return false;
+                if (!IsDateTimeValid(updateSessionViewModel.StartDate, updateSessionViewModel.EndDate)) return false;
+
+                var MappedSessionToUpdate = _mapper.Map(updateSessionViewModel,sessionToUpdate); // recomended way to map
+                sessionRepo.Update(MappedSessionToUpdate!);
+                MappedSessionToUpdate!.UpdatedAt = DateTime.Now;
+                return _uinitOfWork.SaveChanges() > 0;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Failed To Update");
+
+                return false;
+            }
+
+        }
+        public bool DeleteSession(int sessionId)
+        {
             var sessionRepo = _uinitOfWork.SessionsRepository;
-            var sessionToUpdate = sessionRepo.GetById(sessionId);
-
-            if (sessionToUpdate == null) return false;
-            if (!IsTrainerExist(updateSessionViewModel.TrainerId)) return false;
-            if (!IsDateTimeValid(updateSessionViewModel.StartDate, updateSessionViewModel.EndDate)) return false;
-
-            var MappedSessionToUpdate = _mapper.Map<UpdateSessionViewModel, Session>(sessionToUpdate);
-            sessionRepo.Update(MappedSessionToUpdate);
+            var sessionToDelete = sessionRepo.GetById(sessionId);
+            if(!ISessionAvaliableForDelete(sessionToDelete!))return false;
+            sessionRepo.Delete(sessionToDelete!);
             return _uinitOfWork.SaveChanges() > 0;
-
         }
 
         #region HelperMethod
@@ -141,7 +163,25 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             return end > start;
         }
 
-
+        private bool ISessionAvaliableForUpdate(Session session)
+        {
+            if(session ==null) return false;
+            if(session.StartDate <= DateTime.Now) return false;
+            if(session.EndDate<=DateTime.Now) return false;
+            var HasActiveBooking = _uinitOfWork.SessionsRepository
+                .GetCountOfBookesSlots(session.Id) > 0;
+            if (HasActiveBooking) return false; 
+            return true;
+        }
+        private bool ISessionAvaliableForDelete(Session session)
+        {
+            if(session ==null) return false;
+            if(session.EndDate<=DateTime.Now && session.EndDate>DateTime.Now) return false;
+            var HasActiveBooking = _uinitOfWork.SessionsRepository
+                .GetCountOfBookesSlots(session.Id) > 0;
+            if (HasActiveBooking) return false; 
+            return true;
+        }
 
 
         #endregion
