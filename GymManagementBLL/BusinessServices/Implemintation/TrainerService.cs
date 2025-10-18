@@ -1,4 +1,5 @@
-﻿using GymManagementBLL.BusinessServices.Interfaces;
+﻿using AutoMapper;
+using GymManagementBLL.BusinessServices.Interfaces;
 using GymManagementBLL.View_Models;
 using GymManagementDAL.UnitOfWork;
 using GymManagmentDAL.Models;
@@ -14,10 +15,12 @@ namespace GymManagementBLL.BusinessServices.Implemintation
     public class TrainerService : ITrainerService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public TrainerService(IUnitOfWork unitOfWork)
+        public TrainerService(IUnitOfWork unitOfWork,IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
 
@@ -26,14 +29,19 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             var trainers = _unitOfWork.GetRepository<Trainer>().GetAll();
             if (trainers is null || !trainers.Any()) return [];
 
-            var TrainersViewModels = trainers.Select(t => new TrainerViewModel
-            {
-                Name=t.Name,
-                Email =t.Email,
-                Phone=t.Phone,
-                Specialties =t.Specialties.ToString(),
-            });
-            return TrainersViewModels;
+            #region Manual Mapping
+            //var TrainersViewModels = trainers.Select(t => new TrainerViewModel
+            //{
+            //    Name=t.Name,
+            //    Email =t.Email,
+            //    Phone=t.Phone,
+            //    Specialties =t.Specialties.ToString(),
+            //});
+            //return TrainersViewModels; 
+            #endregion
+
+            // Auto Mapping
+            return _mapper.Map<IEnumerable<Trainer>, IEnumerable<TrainerViewModel>>(trainers);
         }
 
         public bool CreateTrainer(CreateTrainerViewModel createTrainer)
@@ -42,19 +50,24 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             var PhoneExists = _unitOfWork.GetRepository<Trainer>().GetAll(t => t.Phone == createTrainer.Phone);
             if (EmailExists.Any() || PhoneExists.Any()) return false;
 
-            var trainer = new Trainer
-            {
-                Name = createTrainer.Name,
-                Email = createTrainer.Email,
-                Phone = createTrainer.Phone,
-                Specialties = createTrainer.Specialties,
-                DateOfBirth = createTrainer.DateOfBirth,
-                Address = {
-                    BuildingNumber = createTrainer.BuildingNumber,
-                    Street = createTrainer.Street,
-                    City = createTrainer.City,
-                }
-            };
+            #region Manual Mapping
+            //var trainer = new Trainer
+            //{
+            //    Name = createTrainer.Name,
+            //    Email = createTrainer.Email,
+            //    Phone = createTrainer.Phone,
+            //    Specialties = createTrainer.Specialties,
+            //    DateOfBirth = createTrainer.DateOfBirth,
+            //    Address = {
+            //        BuildingNumber = createTrainer.BuildingNumber,
+            //        Street = createTrainer.Street,
+            //        City = createTrainer.City,
+            //    }
+            //}; 
+            #endregion
+            // Auto Mapping
+            var trainer = _mapper.Map<CreateTrainerViewModel, Trainer>(createTrainer);
+
             _unitOfWork.GetRepository<Trainer>().Add(trainer);
             return _unitOfWork.SaveChanges() > 0;
         }
@@ -64,15 +77,20 @@ namespace GymManagementBLL.BusinessServices.Implemintation
         {
             var trainer = _unitOfWork.GetRepository<Trainer>().GetById(trainerId);
             if (trainer is null) return null;
-            return new TrainerViewModel
-            {
-                Name = trainer.Name,
-                Email = trainer.Email,
-                Phone = trainer.Phone,
-                Specialties = trainer.Specialties.ToString(),
-                DateOfBirth = trainer.DateOfBirth.ToShortDateString(),
-                Address = trainer.Address is not null ? $"{trainer.Address.BuildingNumber}, {trainer.Address.Street}, {trainer.Address.City}" : null
-            };
+            #region Manual Mapping
+            //return new TrainerViewModel
+            //{
+            //    Name = trainer.Name,
+            //    Email = trainer.Email,
+            //    Phone = trainer.Phone,
+            //    Specialties = trainer.Specialties.ToString(),
+            //    DateOfBirth = trainer.DateOfBirth.ToShortDateString(),
+            //    Address = trainer.Address is not null ? $"{trainer.Address.BuildingNumber}, {trainer.Address.Street}, {trainer.Address.City}" : null
+            //}; 
+            #endregion
+
+            // Auto Mapping
+            return _mapper.Map<Trainer, TrainerViewModel>(trainer);
 
         }
 
@@ -80,16 +98,20 @@ namespace GymManagementBLL.BusinessServices.Implemintation
         {
             var trainer = _unitOfWork.GetRepository<Trainer>().GetById(trainerId);
             if(trainer is null) return null;
-            return new TrainerToUpdateViewModel
-            {
-                Name = trainer.Name,
-                Email = trainer.Email,
-                Phone = trainer.Phone,
-                BuildingNumber = trainer.Address?.BuildingNumber ?? 0,
-                Street = trainer.Address?.Street ?? string.Empty,
-                City = trainer.Address?.City ?? string.Empty,
-                Specialties = trainer.Specialties
-            };
+            #region Manaul Mapping
+            //return new TrainerToUpdateViewModel
+            //{
+            //    Name = trainer.Name,
+            //    Email = trainer.Email,
+            //    Phone = trainer.Phone,
+            //    BuildingNumber = trainer.Address?.BuildingNumber ?? 0,
+            //    Street = trainer.Address?.Street ?? string.Empty,
+            //    City = trainer.Address?.City ?? string.Empty,
+            //    Specialties = trainer.Specialties
+            //}; 
+            #endregion
+            // Auto Mapping
+            return _mapper.Map<Trainer, TrainerToUpdateViewModel>(trainer);
 
         }
 
@@ -122,13 +144,18 @@ namespace GymManagementBLL.BusinessServices.Implemintation
 
                 if (IsEmailExist(trainer.Email) || IsPhoneExist(trainer.Phone)) return false;
 
-                trainer.Email = trainerToUpdate.Email;
-                trainer.Phone = trainerToUpdate.Phone;
-                trainer.Specialties = trainerToUpdate.Specialties;
-                trainer.Address.BuildingNumber = trainerToUpdate.BuildingNumber;
-                trainer.Address.Street = trainerToUpdate.Street;
-                trainer.Address.City = trainerToUpdate.City;
-                trainer.UpdatedAt = DateTime.Now;
+                #region Manual Mapping
+                //trainer.Email = trainerToUpdate.Email;
+                //trainer.Phone = trainerToUpdate.Phone;
+                //trainer.Specialties = trainerToUpdate.Specialties;
+                //trainer.Address.BuildingNumber = trainerToUpdate.BuildingNumber;
+                //trainer.Address.Street = trainerToUpdate.Street;
+                //trainer.Address.City = trainerToUpdate.City;
+                //trainer.UpdatedAt = DateTime.Now; 
+                #endregion
+
+                // Auto Mapping
+                _mapper.Map(trainerToUpdate, trainer);
                 _unitOfWork.GetRepository<Trainer>().Update(trainer);
                 return _unitOfWork.SaveChanges() > 0;
             }

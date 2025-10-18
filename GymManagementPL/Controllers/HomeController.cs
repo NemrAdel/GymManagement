@@ -14,7 +14,7 @@ namespace GymManagementPL.Controllers
             //return NotFound();
             //return Redirect("https://www.google.com");
         }
-        public ViewResult Index2()
+        public ViewResult Loginn()
         {
             return View(); // will search for view with same name as action in folder with same name as controller
         }

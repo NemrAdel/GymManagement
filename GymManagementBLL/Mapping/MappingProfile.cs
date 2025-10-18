@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GymManagementBLL.View_Models;
 using GymManagementBLL.View_Models.SessionVM;
 using GymManagementSystemBLL.View_Models.SessionVm;
 using GymManagmentDAL.Models;
@@ -22,6 +23,71 @@ namespace GymManagementPL.Mapping
             CreateMap<CreateSessionViewModel, Session>();
             CreateMap<Session, UpdateSessionViewModel>().ReverseMap();
             //CreateMap<UpdateSessionViewModel, Session>();
+
+            CreateMap<Member, MemberViewModel>()
+                .ForMember(dest => dest.Address, options =>
+                    options.MapFrom(src => src.Address.BuildingNumber))
+                .ForMember(dest => dest.Address, options =>
+                    options.MapFrom(src => src.Address.City))
+                .ForMember(dest => dest.Address, options =>
+                    options.MapFrom(src => src.Address.Street));
+
+            CreateMap<CreateMemberViewModel, Member>()
+                .ForMember(dest=>dest.HealthRecord.BloodType,options=>
+                options.MapFrom(src=>src.HealthRecord.BloodType))
+                .ForMember(dest=>dest.HealthRecord.Height,options=>
+                options.MapFrom(src=>src.HealthRecord.Height))
+                .ForMember(dest=>dest.HealthRecord.Weight,options=>
+                options.MapFrom(src=>src.HealthRecord.Weight))
+                .ForMember(dest=>dest.HealthRecord.Note,options=>
+                options.MapFrom(src=>src.HealthRecord.Note));
+
+
+            CreateMap<Member, HealthRecordView>()
+                .ForMember(dest => dest.Note, options =>
+                options.MapFrom(src => src.HealthRecord.Note))
+                .ForMember(dest => dest.Height, options =>
+                options.MapFrom(src => src.HealthRecord.Weight))
+                .ForMember(dest => dest.Weight, options =>
+                options.MapFrom(src => src.HealthRecord.Weight))
+                .ForMember(dest => dest.BloodType, options =>
+                options.MapFrom(src => src.HealthRecord.BloodType));
+
+
+            CreateMap<Member, MemberToUpdateViewModel>()
+                .ForMember(dest => dest.BuildingNumber, options =>
+                    options.MapFrom(src => src.Address.BuildingNumber))
+                .ForMember(dest => dest.City, options =>
+                    options.MapFrom(src => src.Address.City))
+                .ForMember(dest => dest.Street, options =>
+                    options.MapFrom(src => src.Address.Street));
+
+
+            CreateMap<IEnumerable<PlanViewModel>, IEnumerable<Plan>>();
+            CreateMap<Plan, PlanToUpdateViewModel>();
+
+            CreateMap<Trainer, TrainerViewModel>();
+
+
+            CreateMap<IEnumerable<Trainer>, IEnumerable<TrainerViewModel>>();
+
+
+            CreateMap<CreateTrainerViewModel, Trainer>()
+                .ForMember(dest => dest.Address.BuildingNumber, options =>
+                options.MapFrom(src => src.BuildingNumber))
+                .ForMember(dest => dest.Address.Street, options =>
+                options.MapFrom(src => src.Street))
+                .ForMember(dest => dest.Address.City, options =>
+                options.MapFrom(src => src.City));
+
+
+            CreateMap<TrainerToUpdateViewModel, Trainer>()
+                .ForMember(dest => dest.Address.BuildingNumber, options =>
+                options.MapFrom(src => src.BuildingNumber))
+                .ForMember(dest => dest.Address.Street, options =>
+                options.MapFrom(src => src.Street))
+                .ForMember(dest => dest.Address.City, options =>
+                options.MapFrom(src => src.City)).ReverseMap();
         }
     }
 }
