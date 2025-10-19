@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GymManagementDAL.Migrations
 {
+
     /// <inheritdoc />
     public partial class init : Migration
     {
