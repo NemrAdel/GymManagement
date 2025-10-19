@@ -32,15 +32,19 @@ namespace GymManagementPL.Mapping
                 .ForMember(dest => dest.Address, options =>
                     options.MapFrom(src => src.Address.Street));
 
+            CreateMap<CreateMemberViewModel, HealthRecord>();
+
             CreateMap<CreateMemberViewModel, Member>()
-                .ForMember(dest=>dest.HealthRecord.BloodType,options=>
-                options.MapFrom(src=>src.HealthRecord.BloodType))
-                .ForMember(dest=>dest.HealthRecord.Height,options=>
-                options.MapFrom(src=>src.HealthRecord.Height))
-                .ForMember(dest=>dest.HealthRecord.Weight,options=>
-                options.MapFrom(src=>src.HealthRecord.Weight))
-                .ForMember(dest=>dest.HealthRecord.Note,options=>
-                options.MapFrom(src=>src.HealthRecord.Note));
+                //.ForPath(dest=>dest.HealthRecord.BloodType,options=>
+                //options.MapFrom(src=>src.HealthRecord))
+                //.ForMember(dest=>dest.HealthRecord.Height,options=>
+                //options.MapFrom(src=>src.HealthRecord.Height))
+                //.ForMember(dest=>dest.HealthRecord.Weight,options=>
+                //options.MapFrom(src=>src.HealthRecord.Weight))
+                //.ForMember(dest=>dest.HealthRecord.Note,options=>
+                //options.MapFrom(src=>src.HealthRecord.Note));
+                .ForMember(dest => dest.HealthRecord, options =>
+                options.MapFrom(src => src));
 
 
             CreateMap<Member, HealthRecordView>()
@@ -71,23 +75,28 @@ namespace GymManagementPL.Mapping
 
             CreateMap<IEnumerable<Trainer>, IEnumerable<TrainerViewModel>>();
 
-
+            CreateMap<CreateTrainerViewModel, Address>();
             CreateMap<CreateTrainerViewModel, Trainer>()
-                .ForMember(dest => dest.Address.BuildingNumber, options =>
-                options.MapFrom(src => src.BuildingNumber))
-                .ForMember(dest => dest.Address.Street, options =>
-                options.MapFrom(src => src.Street))
-                .ForMember(dest => dest.Address.City, options =>
-                options.MapFrom(src => src.City));
+                //.ForMember(dest => dest.Address.BuildingNumber, options =>
+                //options.MapFrom(src => src.BuildingNumber))
+                //.ForMember(dest => dest.Address.Street, options =>
+                //options.MapFrom(src => src.Street))
+                //.ForMember(dest => dest.Address.City, options =>
+                //options.MapFrom(src => src.City));
+                .ForMember(dest => dest.Address, options =>
+                options.MapFrom(src => src));
 
 
+            CreateMap<TrainerToUpdateViewModel, Address>();
             CreateMap<TrainerToUpdateViewModel, Trainer>()
-                .ForMember(dest => dest.Address.BuildingNumber, options =>
-                options.MapFrom(src => src.BuildingNumber))
-                .ForMember(dest => dest.Address.Street, options =>
-                options.MapFrom(src => src.Street))
-                .ForMember(dest => dest.Address.City, options =>
-                options.MapFrom(src => src.City)).ReverseMap();
+                //.ForMember(dest => dest.Address.BuildingNumber, options =>
+                //options.MapFrom(src => src.BuildingNumber))
+                //.ForMember(dest => dest.Address.Street, options =>
+                //options.MapFrom(src => src.Street))
+                //.ForMember(dest => dest.Address.City, options =>
+                //options.MapFrom(src => src.City)).ReverseMap();
+                .ForMember(dest => dest.Address, options =>
+                options.MapFrom(src => src));
         }
     }
 }

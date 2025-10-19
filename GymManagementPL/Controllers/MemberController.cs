@@ -14,7 +14,7 @@ namespace GymManagementPL.Controllers
         public ActionResult Index()
         {
             var members = _memberService.GetAllMembers();
-            return View();
+            return View(members);
         }
     }
 }
