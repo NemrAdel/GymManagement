@@ -105,7 +105,6 @@ namespace GymManagementDAL.Data.Migrations
                         .HasColumnType("nvarchar(11)");
 
                     b.Property<string>("Photo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -325,7 +324,7 @@ namespace GymManagementDAL.Data.Migrations
                             b1.Property<int>("MemberId")
                                 .HasColumnType("int");
 
-                            b1.Property<int>("Building_no")
+                            b1.Property<int>("BuildingNumber")
                                 .HasColumnType("int");
 
                             b1.Property<string>("City")
@@ -414,7 +413,7 @@ namespace GymManagementDAL.Data.Migrations
                             b1.Property<int>("TrainerId")
                                 .HasColumnType("int");
 
-                            b1.Property<int>("Building_no")
+                            b1.Property<int>("BuildingNumber")
                                 .HasColumnType("int");
 
                             b1.Property<string>("City")

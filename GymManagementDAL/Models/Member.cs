@@ -9,7 +9,7 @@ namespace GymManagmentDAL.Models
     public class Member: GymUser
     {
         //join date == created at
-        public string Photo { get; set; }
+        public string? Photo { get; set; }
 
         // Relations
         public HealthRecord HealthRecord { get; set; }

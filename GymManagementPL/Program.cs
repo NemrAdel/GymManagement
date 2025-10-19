@@ -1,3 +1,5 @@
+using GymManagementBLL.BusinessServices.Implemintation;
+using GymManagementBLL.BusinessServices.Interfaces;
 using GymManagementDAL.Data.SeedDara;
 using GymManagementDAL.Repositories.Implemintation;
 using GymManagementDAL.Repositories.Interfaces;
@@ -35,6 +37,10 @@ namespace GymManagementPL
 
             builder.Services.AddScoped(typeof(ISessionRepository),typeof(SessionRepository));
 
+            builder.Services.AddScoped(typeof(IAnalyticsService), typeof(AnalyticService));
+
+            builder.Services.AddScoped<IMemberService,MemberService>();
+
             builder.Services.AddAutoMapper(X=>X.AddProfile(new MappingProfile()));
             #endregion
 
@@ -68,7 +74,7 @@ namespace GymManagementPL
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}")
+                pattern: "{controller=Home}/{action=Index}/{id?}")// segments / segments /
                 .WithStaticAssets(); 
             #endregion
 
