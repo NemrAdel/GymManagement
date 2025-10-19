@@ -12,6 +12,7 @@ namespace GymManagementDAL.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
