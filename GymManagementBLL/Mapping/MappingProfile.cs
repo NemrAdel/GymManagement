@@ -24,13 +24,12 @@ namespace GymManagementPL.Mapping
             CreateMap<Session, UpdateSessionViewModel>().ReverseMap();
             //CreateMap<UpdateSessionViewModel, Session>();
 
+
             CreateMap<Member, MemberViewModel>()
+                .ForMember(dest=>dest.DateOfBirth,option=>
+                option.MapFrom(src=>src.DateOfBirth.ToShortDateString()))
                 .ForMember(dest => dest.Address, options =>
-                    options.MapFrom(src => src.Address.BuildingNumber))
-                .ForMember(dest => dest.Address, options =>
-                    options.MapFrom(src => src.Address.City))
-                .ForMember(dest => dest.Address, options =>
-                    options.MapFrom(src => src.Address.Street));
+                    options.MapFrom(src => $"{src.Address.BuildingNumber}-{src.Address.Street}-{src.Address.City}"));
 
             CreateMap<CreateMemberViewModel, HealthRecord>();
 

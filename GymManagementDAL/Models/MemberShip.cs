@@ -13,7 +13,7 @@ namespace GymManagmentDAL.Models
 
         public string Status { get
             {
-                if (EndDate >= DateTime.Now) return "Expired";
+                if (EndDate <= DateTime.Now) return "Expired";
                 else return "Active";
             }
         } 
