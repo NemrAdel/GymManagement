@@ -46,15 +46,10 @@ namespace GymManagementPL.Mapping
                 options.MapFrom(src => src));
 
 
-            CreateMap<Member, HealthRecordView>()
-                .ForMember(dest => dest.Note, options =>
-                options.MapFrom(src => src.HealthRecord.Note))
-                .ForMember(dest => dest.Height, options =>
-                options.MapFrom(src => src.HealthRecord.Weight))
-                .ForMember(dest => dest.Weight, options =>
-                options.MapFrom(src => src.HealthRecord.Weight))
-                .ForMember(dest => dest.BloodType, options =>
-                options.MapFrom(src => src.HealthRecord.BloodType));
+            CreateMap<Member, MemberViewModel>().ReverseMap();
+
+            CreateMap<HealthRecord, HealthRecordView>();
+
 
 
             CreateMap<Member, MemberToUpdateViewModel>()
