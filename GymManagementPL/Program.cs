@@ -49,7 +49,7 @@ namespace GymManagementPL
             using var scope = app.Services.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<GymDbContext>(); // expicit Injection
             var pendingMigrations = dbContext.Database.GetPendingMigrations();
-            if (pendingMigrations?.Any()??false) 
+            if (pendingMigrations?.Any() ?? false)
             {
                 dbContext.Database.Migrate();
             }

@@ -3,14 +3,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace GymManagementDAL.Data.Migrations
+namespace GymManagementDAL.Migrations
 {
+
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
@@ -77,7 +79,7 @@ namespace GymManagementDAL.Data.Migrations
                     Phone = table.Column<string>(type: "nvarchar(11)", nullable: false),
                     DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
-                    Address_Building_no = table.Column<int>(type: "int", nullable: false),
+                    Address_BuildingNumber = table.Column<int>(type: "int", nullable: false),
                     Address_City = table.Column<string>(type: "varchar(30)", nullable: false),
                     Address_Street = table.Column<string>(type: "varchar(30)", nullable: false)
                 },
@@ -93,7 +95,7 @@ namespace GymManagementDAL.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     JoinDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(50)", nullable: false),
@@ -101,7 +103,7 @@ namespace GymManagementDAL.Data.Migrations
                     Phone = table.Column<string>(type: "nvarchar(11)", nullable: false),
                     DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
-                    Address_Building_no = table.Column<int>(type: "int", nullable: false),
+                    Address_BuildingNumber = table.Column<int>(type: "int", nullable: false),
                     Address_City = table.Column<string>(type: "varchar(30)", nullable: false),
                     Address_Street = table.Column<string>(type: "varchar(30)", nullable: false)
                 },
