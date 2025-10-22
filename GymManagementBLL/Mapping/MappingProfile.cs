@@ -32,6 +32,7 @@ namespace GymManagementPL.Mapping
                     options.MapFrom(src => $"{src.Address.BuildingNumber}-{src.Address.Street}-{src.Address.City}"));
 
             CreateMap<CreateMemberViewModel, HealthRecord>();
+            CreateMap<HealthRecordView, HealthRecord>();
 
             CreateMap<CreateMemberViewModel, Member>()
                 //.ForPath(dest=>dest.HealthRecord.BloodType,options=>

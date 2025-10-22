@@ -116,6 +116,7 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             var MappedMember = _mapper.Map<CreateMemberViewModel, Member>(createMember);
             #endregion
             // add to database
+            MappedMember.HealthRecord.BloodType= createMember.HealthRecord.BloodType;
             _unitOfWork.GetRepository<Member>().Add(MappedMember);
             return _unitOfWork.SaveChanges()>0;
 
