@@ -47,7 +47,6 @@ namespace GymManagementPL.Mapping
                 options.MapFrom(src => src));
 
 
-            CreateMap<Member, MemberViewModel>().ReverseMap();
 
             CreateMap<HealthRecord, HealthRecordView>();
 
