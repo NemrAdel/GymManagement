@@ -116,6 +116,9 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             var MappedMember = _mapper.Map<CreateMemberViewModel, Member>(createMember);
             #endregion
             // add to database
+            MappedMember.HealthRecord.BloodType= createMember.HealthRecord.BloodType;
+            MappedMember.Address.Street= createMember.Street;
+
             _unitOfWork.GetRepository<Member>().Add(MappedMember);
             return _unitOfWork.SaveChanges()>0;
 
@@ -208,7 +211,7 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             try
             {
                 var EmailExist = _unitOfWork.GetRepository<Member>()
-                    .GetAll(x => x.Email == memberToUpdate.Email).Any();
+                    .GetAll(x => x.Email == memberToUpdate.Email ).Any();
                 var PhoneExist = _unitOfWork.GetRepository<Member>()
                     .GetAll(x => x.Phone == memberToUpdate.Phone).Any();
                 if (EmailExist || PhoneExist) return false;
