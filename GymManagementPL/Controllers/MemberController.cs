@@ -79,6 +79,9 @@ namespace GymManagementPL.Controllers
             }
             return View(memberToUpdate);
         }
+
+
+
         [HttpPost]
         public ActionResult MemberEdit(int id, MemberToUpdateViewModel UpdateMember) //from form
         {

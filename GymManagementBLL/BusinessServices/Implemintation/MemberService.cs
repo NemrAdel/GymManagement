@@ -217,22 +217,22 @@ namespace GymManagementBLL.BusinessServices.Implemintation
 
                 var member = _unitOfWork.GetRepository<Member>().GetById(memberId);
                 if (member is null) return false;
-                #region Manual Mapping
+            #region Manual Mapping
 
-                //member.Email = memberToUpdate.Email;
-                //member.Phone = memberToUpdate.Phone;
-                //member.Address.BuildingNumber = memberToUpdate.BuildingNumber;
-                //member.Address.City = memberToUpdate.City;
-                //member.Address.Street = memberToUpdate.Street;
-                //member.UpdatedAt = DateTime.Now; // the updatedAt was allow null in database , createdAt was auto 
+            member.Email = memberToUpdate.Email;
+            member.Phone = memberToUpdate.Phone;
+            member.Address.BuildingNumber = memberToUpdate.BuildingNumber;
+            member.Address.City = memberToUpdate.City;
+            member.Address.Street = memberToUpdate.Street;
+            member.UpdatedAt = DateTime.Now; // the updatedAt was allow null in database , createdAt was auto 
 
-                #endregion
+            #endregion
 
-                #region Auto Mapping
-                var MemberUpdate = _mapper.Map<MemberToUpdateViewModel, Member>(memberToUpdate);
-                #endregion
+            #region Auto Mapping
+            //var MemberUpdate = _mapper.Map<MemberToUpdateViewModel, Member>(memberToUpdate);
+            #endregion
 
-                _unitOfWork.GetRepository<Member>().Update(MemberUpdate);
+            _unitOfWork.GetRepository<Member>().Update(member);
                 return _unitOfWork.SaveChanges() > 0;
         }
 
