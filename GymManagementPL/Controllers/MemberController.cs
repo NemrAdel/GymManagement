@@ -117,13 +117,6 @@ namespace GymManagementPL.Controllers
                 TempData["ErrorMessage"] = "Member not found.";
                 return RedirectToAction(nameof(Index));
             }
-            var isDeleted = _memberService.RemoveMember(id);
-            if (!isDeleted)
-            {
-                TempData["ErrorMessage"] = "Failed to delete member.";
-                return RedirectToAction(nameof(Index));
-            }
-            TempData["SuccessMessage"] = "Member deleted successfully.";
             ViewBag.MemberId = id;
             return View();
 
@@ -131,7 +124,7 @@ namespace GymManagementPL.Controllers
 
         }
         [HttpPost]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)// from form
         {
             if (id <= 0)
             {

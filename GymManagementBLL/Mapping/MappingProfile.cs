@@ -59,7 +59,7 @@ namespace GymManagementPL.Mapping
                 .ForMember(dest => dest.City, options =>
                     options.MapFrom(src => src.Address.City))
                 .ForMember(dest => dest.Street, options =>
-                    options.MapFrom(src => src.Address.Street));
+                    options.MapFrom(src => src.Address.Street)).ReverseMap();
 
 
             CreateMap<IEnumerable<PlanViewModel>, IEnumerable<Plan>>();

@@ -89,37 +89,37 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             // Create MemberViewModel => Member
 
             #region Manual Mapping
-            //var member = new Member
-            //{
-            //    Name = createMember.Name,
-            //    Email = createMember.Email,
-            //    Phone = createMember.Phone,
-            //    DateOfBirth = createMember.DateOfBirth,
-            //    Gender = createMember.Gender,
-            //    Address =
-            //    {
-            //        BuildingNumber = createMember.BuildingNumber,
-            //        City = createMember.City,
-            //        Street = createMember.Street
-            //    },
-            //    HealthRecord = new HealthRecord
-            //    {
-            //        Height = createMember.HealthRecord.Height,
-            //        Weight = createMember.HealthRecord.Weight,
-            //        BloodType = createMember.HealthRecord.BloodType,
-            //        Note = createMember.HealthRecord.Note,
-            //    }
-            //}; 
+            var member = new Member
+            {
+                Name = createMember.Name,
+                Email = createMember.Email,
+                Phone = createMember.Phone,
+                DateOfBirth = createMember.DateOfBirth,
+                Gender = createMember.Gender,
+                Address = new Address
+                {
+                    BuildingNumber = createMember.BuildingNumber,
+                    City = createMember.City,
+                    Street = createMember.Street
+                },
+                HealthRecord = new HealthRecord
+                {
+                    Height = createMember.HealthRecord.Height,
+                    Weight = createMember.HealthRecord.Weight,
+                    BloodType = createMember.HealthRecord.BloodType,
+                    Note = createMember.HealthRecord.Note,
+                }
+            };
             #endregion
 
-            #region Auto Mapping
-            var MappedMember = _mapper.Map<CreateMemberViewModel, Member>(createMember);
-            #endregion
-            // add to database
-            MappedMember.HealthRecord.BloodType= createMember.HealthRecord.BloodType;
-            MappedMember.Address.Street= createMember.Street;
+            //#region Auto Mapping
+            //var MappedMember = _mapper.Map<CreateMemberViewModel, Member>(createMember);
+            //#endregion
+            //// add to database
+            //MappedMember.HealthRecord.BloodType= createMember.HealthRecord.BloodType;
+            //MappedMember.Address.Street= createMember.Street;
 
-            _unitOfWork.GetRepository<Member>().Add(MappedMember);
+            _unitOfWork.GetRepository<Member>().Add(member);
             return _unitOfWork.SaveChanges()>0;
 
 
@@ -208,12 +208,11 @@ namespace GymManagementBLL.BusinessServices.Implemintation
 
         public bool UpdateMember(int memberId, MemberToUpdateViewModel memberToUpdate)
         {
-            try
-            {
+
                 var EmailExist = _unitOfWork.GetRepository<Member>()
-                    .GetAll(x => x.Email == memberToUpdate.Email ).Any();
+                    .GetAll(x => x.Email == memberToUpdate.Email && x.Id!=memberId ).Any();
                 var PhoneExist = _unitOfWork.GetRepository<Member>()
-                    .GetAll(x => x.Phone == memberToUpdate.Phone).Any();
+                    .GetAll(x => x.Phone == memberToUpdate.Phone && x.Id != memberId).Any();
                 if (EmailExist || PhoneExist) return false;
 
                 var member = _unitOfWork.GetRepository<Member>().GetById(memberId);
@@ -235,15 +234,11 @@ namespace GymManagementBLL.BusinessServices.Implemintation
 
                 _unitOfWork.GetRepository<Member>().Update(MemberUpdate);
                 return _unitOfWork.SaveChanges() > 0;
-            }
-            catch (Exception)
-            {
-
-                return false;
-            }
-
-
         }
+
+
+
+        
         public bool RemoveMember(int memberId)
         {
             try
