@@ -19,13 +19,13 @@ namespace GymManagementPL.Controllers
         }
         public ActionResult MemberDetails(int id)
         {
-            if (id <=0)
+            if (id <= 0)
             {
                 TempData["ErrorMessage"] = "Invalid Member Id.";
                 return RedirectToAction(nameof(Index));
             }
             var member = _memberService.GetMemberDetails(id);
-            if(member is null)
+            if (member is null)
             {
                 TempData["ErrorMessage"] = "Member not found.";
                 return RedirectToAction(nameof(Index));
@@ -34,7 +34,7 @@ namespace GymManagementPL.Controllers
         }
         public ActionResult HealthRecordDetails(int id)
         {
-            if (id <=0)
+            if (id <= 0)
                 return RedirectToAction(nameof(Index));
             var healthRecord = _memberService.GetMemberHealthDetails(id);
             if (healthRecord is null)
@@ -80,7 +80,7 @@ namespace GymManagementPL.Controllers
             return View(memberToUpdate);
         }
         [HttpPost]
-        public ActionResult MemberEdit(int id , MemberToUpdateViewModel UpdateMember) //from form
+        public ActionResult MemberEdit(int id, MemberToUpdateViewModel UpdateMember) //from form
         {
             if (id <= 0)
             {
@@ -101,10 +101,51 @@ namespace GymManagementPL.Controllers
                 return View(UpdateMember);
             }
             TempData["SuccessMessage"] = "Member updated successfully.";
-            return  RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index));
         }
-        
 
-        
+        public ActionResult Delete(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Id Cannot be negative or zero.";
+                return RedirectToAction(nameof(Index));
+            }
+            var member = _memberService.GetMemberDetails(id);
+            if (member is null)
+            {
+                TempData["ErrorMessage"] = "Member not found.";
+                return RedirectToAction(nameof(Index));
+            }
+            var isDeleted = _memberService.RemoveMember(id);
+            if (!isDeleted)
+            {
+                TempData["ErrorMessage"] = "Failed to delete member.";
+                return RedirectToAction(nameof(Index));
+            }
+            TempData["SuccessMessage"] = "Member deleted successfully.";
+            return RedirectToAction(nameof(Index));
+
+
+
+        }
+        [HttpPost]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Id Cannot be negative or zero.";
+                return RedirectToAction(nameof(Index));
+            }
+            var isDeleted = _memberService.RemoveMember(id);
+            if (!isDeleted)
+            {
+                TempData["ErrorMessage"] = "Failed to delete member.";
+                return RedirectToAction(nameof(Index));
+            }
+            TempData["SuccessMessage"] = "Member deleted successfully.";
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
