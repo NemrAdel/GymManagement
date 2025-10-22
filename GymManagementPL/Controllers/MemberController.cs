@@ -124,7 +124,8 @@ namespace GymManagementPL.Controllers
                 return RedirectToAction(nameof(Index));
             }
             TempData["SuccessMessage"] = "Member deleted successfully.";
-            return RedirectToAction(nameof(Index));
+            ViewBag.MemberId = id;
+            return View();
 
 
 
