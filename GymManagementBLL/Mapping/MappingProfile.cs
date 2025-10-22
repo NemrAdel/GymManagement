@@ -28,8 +28,9 @@ namespace GymManagementPL.Mapping
             CreateMap<Member, MemberViewModel>()
                 .ForMember(dest=>dest.DateOfBirth,option=>
                 option.MapFrom(src=>src.DateOfBirth.ToShortDateString()))
+
                 .ForMember(dest => dest.Address, options =>
-                    options.MapFrom(src => $"{src.Address.BuildingNumber}-{src.Address.Street}-{src.Address.City}"));
+                    options.MapFrom(src =>src.Address !=null? $"{src.Address.BuildingNumber}-{src.Address.Street}-{src.Address.City}":"Address not found"));
 
             CreateMap<CreateMemberViewModel, HealthRecord>();
 
