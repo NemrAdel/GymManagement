@@ -207,11 +207,11 @@ namespace GymManagementBLL.BusinessServices.Implemintation
         public bool UpdateMember(int memberId, MemberToUpdateViewModel memberToUpdate)
         {
 
-                var EmailExist = _unitOfWork.GetRepository<Member>()
-                    .GetAll(x => x.Email == memberToUpdate.Email && x.Id!=memberId ).Any();
-                var PhoneExist = _unitOfWork.GetRepository<Member>()
+            var EmailExist = _unitOfWork.GetRepository<Member>()
+                .GetAll(x => x.Email == memberToUpdate.Email && x.Id != memberId).Any();
+            var PhoneExist = _unitOfWork.GetRepository<Member>()
                     .GetAll(x => x.Phone == memberToUpdate.Phone && x.Id != memberId).Any();
-                if (EmailExist || PhoneExist) return false;
+                if (EmailExist|| PhoneExist) return false;
 
                 var member = _unitOfWork.GetRepository<Member>().GetById(memberId);
                 if (member is null) return false;
@@ -266,7 +266,7 @@ namespace GymManagementBLL.BusinessServices.Implemintation
         }
         private bool IsEmailExist(string email)
         {
-            return _unitOfWork.GetRepository<Member>().GetAll(x => x.Email == email).Any();
+            return _unitOfWork.GetRepository<Member>().GetAll(x => x.Email == email ).Any();
         }
         private bool IsPhoneExist(string phone)
         {
