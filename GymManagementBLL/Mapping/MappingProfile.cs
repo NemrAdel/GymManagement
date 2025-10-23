@@ -13,9 +13,10 @@ namespace GymManagementPL.Mapping
             CreateMap<Session, SessionViewModel>()
                 .ForMember(dest => dest.TrainerName, options =>
                     options.MapFrom(src => src.Trainers.Name))
-                //مش شرط احط {} لو مفيش غير سطر واحد
+
                 .ForMember(dest => dest.CategoryName, options =>
                     options.MapFrom(src => src.Category.CategoryName))
+
                 .ForMember(dest => dest.AvailableSlots, options =>
                     options.Ignore()); // AvailableSlots will be set manually in the service
 
@@ -32,24 +33,23 @@ namespace GymManagementPL.Mapping
                 .ForMember(dest => dest.Address, options =>
                     options.MapFrom(src =>src.Address !=null? $"{src.Address.BuildingNumber}-{src.Address.Street}-{src.Address.City}":"Address not found"));
 
-            CreateMap<CreateMemberViewModel, HealthRecord>();
-            CreateMap<HealthRecordView, HealthRecord>();
+            
+            
 
             CreateMap<CreateMemberViewModel, Member>()
-                //.ForPath(dest=>dest.HealthRecord.BloodType,options=>
-                //options.MapFrom(src=>src.HealthRecord))
-                //.ForMember(dest=>dest.HealthRecord.Height,options=>
-                //options.MapFrom(src=>src.HealthRecord.Height))
-                //.ForMember(dest=>dest.HealthRecord.Weight,options=>
-                //options.MapFrom(src=>src.HealthRecord.Weight))
-                //.ForMember(dest=>dest.HealthRecord.Note,options=>
-                //options.MapFrom(src=>src.HealthRecord.Note));
-                .ForMember(dest => dest.HealthRecord, options =>
+                .ForMember(dest => dest.Address, options =>
                 options.MapFrom(src => src));
 
+            CreateMap<CreateMemberViewModel, Address>()
+                .ForMember(dest => dest.BuildingNumber, option =>
+                option.MapFrom(src => src.BuildingNumber))
+                .ForMember(dest => dest.Street, option =>
+                option.MapFrom(src => src.Street))
+                .ForMember(dest => dest.City, option =>
+                option.MapFrom(src => src.City));
 
+            CreateMap<HealthRecordView, HealthRecord>().ReverseMap();
 
-            CreateMap<HealthRecord, HealthRecordView>();
 
 
 
@@ -61,7 +61,18 @@ namespace GymManagementPL.Mapping
                 .ForMember(dest => dest.Street, options =>
                     options.MapFrom(src => src.Address.Street));
 
-            CreateMap<MemberToUpdateViewModel, Member>();
+            CreateMap<MemberToUpdateViewModel, Member>()
+                .ForMember(dest => dest.Name, opt =>
+                opt.Ignore())
+                .ForMember(dest => dest.Photo, opt =>
+                opt.Ignore())
+                .AfterMap((src, dest) => {
+                    dest.Address.Street = src.Street;
+                    dest.Address.BuildingNumber = src.BuildingNumber;
+                    dest.Address.City = src.City;
+                    dest.UpdatedAt = DateTime.Now;
+                });
+                 
 
 
             CreateMap<IEnumerable<PlanViewModel>, IEnumerable<Plan>>();

@@ -89,37 +89,35 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             // Create MemberViewModel => Member
 
             #region Manual Mapping
-            var member = new Member
-            {
-                Name = createMember.Name,
-                Email = createMember.Email,
-                Phone = createMember.Phone,
-                DateOfBirth = createMember.DateOfBirth,
-                Gender = createMember.Gender,
-                Address = new Address
-                {
-                    BuildingNumber = createMember.BuildingNumber,
-                    City = createMember.City,
-                    Street = createMember.Street
-                },
-                HealthRecord = new HealthRecord
-                {
-                    Height = createMember.HealthRecord.Height,
-                    Weight = createMember.HealthRecord.Weight,
-                    BloodType = createMember.HealthRecord.BloodType,
-                    Note = createMember.HealthRecord.Note,
-                }
-            };
+            //var member = new Member
+            //{
+            //    Name = createMember.Name,
+            //    Email = createMember.Email,
+            //    Phone = createMember.Phone,
+            //    DateOfBirth = createMember.DateOfBirth,
+            //    Gender = createMember.Gender,
+            //    Address = new Address
+            //    {
+            //        BuildingNumber = createMember.BuildingNumber,
+            //        City = createMember.City,
+            //        Street = createMember.Street
+            //    },
+            //    HealthRecord = new HealthRecord
+            //    {
+            //        Height = createMember.HealthRecord.Height,
+            //        Weight = createMember.HealthRecord.Weight,
+            //        BloodType = createMember.HealthRecord.BloodType,
+            //        Note = createMember.HealthRecord.Note,
+            //    }
+            //};
             #endregion
 
-            //#region Auto Mapping
-            //var MappedMember = _mapper.Map<CreateMemberViewModel, Member>(createMember);
-            //#endregion
-            //// add to database
-            //MappedMember.HealthRecord.BloodType= createMember.HealthRecord.BloodType;
-            //MappedMember.Address.Street= createMember.Street;
+            #region Auto Mapping
+            var MappedMember = _mapper.Map<CreateMemberViewModel, Member>(createMember);
+            #endregion
+            // add to database
 
-            _unitOfWork.GetRepository<Member>().Add(member);
+            _unitOfWork.GetRepository<Member>().Add(MappedMember);
             return _unitOfWork.SaveChanges()>0;
 
 
@@ -219,20 +217,20 @@ namespace GymManagementBLL.BusinessServices.Implemintation
                 if (member is null) return false;
             #region Manual Mapping
 
-            member.Email = memberToUpdate.Email;
-            member.Phone = memberToUpdate.Phone;
-            member.Address.BuildingNumber = memberToUpdate.BuildingNumber;
-            member.Address.City = memberToUpdate.City;
-            member.Address.Street = memberToUpdate.Street;
-            member.UpdatedAt = DateTime.Now; // the updatedAt was allow null in database , createdAt was auto 
-
+            //member.Email = memberToUpdate.Email;
+            //member.Phone = memberToUpdate.Phone;
+            //member.Address.BuildingNumber = memberToUpdate.BuildingNumber;
+            //member.Address.City = memberToUpdate.City;
+            //member.Address.Street = memberToUpdate.Street;
             #endregion
 
             #region Auto Mapping
-            //var MemberUpdate = _mapper.Map<MemberToUpdateViewModel, Member>(memberToUpdate);
+            var MemberUpdate = _mapper.Map(memberToUpdate,member);
             #endregion
+            //member.UpdatedAt = DateTime.Now; // the updatedAt was allow null in database , createdAt was auto 
 
-            _unitOfWork.GetRepository<Member>().Update(member);
+
+            _unitOfWork.GetRepository<Member>().Update(MemberUpdate);
                 return _unitOfWork.SaveChanges() > 0;
         }
 
