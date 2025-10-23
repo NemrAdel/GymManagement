@@ -62,7 +62,7 @@
                                         <ul class="dropdown-menu dropdown-menu-start"
                                             aria-labelledby="dropdownMenuButton-@trainer.Id">
                                             <li>
-                                                <a href="Trainer/TrainerDetails/TrainerId"
+                                                <a asp-controller="Trainer" asp-action="TrainerDetails" asp-route-id="@trainer.Id"
                                                    class="dropdown-item d-flex align-items-center gap-3">
                                                     <i class="bi bi-eye text-primary-color"></i>
                                                     <span>View Details</span>

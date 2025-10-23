@@ -80,7 +80,11 @@ namespace GymManagementPL.Mapping
 
 
 
-            CreateMap<Trainer, TrainerViewModel>();
+            CreateMap<Trainer, TrainerViewModel>()
+                .ForMember(dest=>dest.Address,opt=>
+                opt.MapFrom(src=>$"{src.Address.BuildingNumber}-{src.Address.Street}-{src.Address.City}"))
+                .ForMember(dest=>dest.DateOfBirth,opt=>
+                opt.MapFrom(src=>src.DateOfBirth.ToShortDateString()));
 
 
             CreateMap<CreateTrainerViewModel, Address>();

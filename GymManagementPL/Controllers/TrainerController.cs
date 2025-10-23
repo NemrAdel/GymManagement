@@ -21,9 +21,19 @@ namespace GymManagementPL.Controllers
             //}
             return View(trainers);
         }
-        public ActionResult GetTrainers()
+        public ActionResult TrainerDetails(int id)
         {
-            return View();
+            if(id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Trainer Id.";
+                return RedirectToAction(nameof(Index));
+            }
+            var trainer= _trainerService.GetTrainerDetails(id);
+            if(trainer is null){
+                TempData["ErrorMessage"] = "Trainer not found.";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(trainer);
         }
         public ActionResult Create()
         {
