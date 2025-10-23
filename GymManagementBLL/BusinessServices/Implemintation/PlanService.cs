@@ -67,17 +67,17 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             if (plan is null || plan.IsActive ||HasActiveMemberShips(planId)) return null;
 
             #region Manual Mapping
-            //return new PlanToUpdateViewModel
-            //{
-            //    Name = plan.Name,
-            //    Description = plan.Description,
-            //    DuratonDays = plan.DurationDays,
-            //    price = plan.Price
-            //}; 
+            return new PlanToUpdateViewModel
+            {
+                Name = plan.Name,
+                Description = plan.Description,
+                DuratonDays = plan.DurationDays,
+                price = plan.Price
+            };
             #endregion
 
             // Auto Mapping
-            return _mapper.Map<Plan,PlanToUpdateViewModel>(plan);
+            //return _mapper.Map<Plan,PlanToUpdateViewModel>(plan);
         }
 
         public bool UpdatePlan(int planId, PlanToUpdateViewModel planToUpdate)
@@ -93,17 +93,18 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             ////plan.DurationDays = planToUpdate.DuratonDays;
             ////plan.Price = planToUpdate.price;
 
-            //(plan.Description,plan.DurationDays,plan.Price)=
+            //(plan.Description, plan.DurationDays, plan.Price) =
             //    (planToUpdate.Description, planToUpdate.DuratonDays, planToUpdate.price);
-            //plan.UpdatedAt = DateTime.Now; 
+            //plan.UpdatedAt = DateTime.Now;
             #endregion
 
             try
             {
 
                 // Auto Mapping
-                _mapper.Map(planToUpdate, plan); // as object to object mapping => same values form source to destination
-                _unitOfWork.GetRepository<Plan>().Update(plan);
+                var planupdate =_mapper.Map<Plan>(planToUpdate); // as object to object mapping => same values form source to destination
+                _unitOfWork.GetRepository<Plan>().Update(planupdate);
+                plan.UpdatedAt = DateTime.Now;
                 return _unitOfWork.SaveChanges() > 0;
             }
             catch (Exception)

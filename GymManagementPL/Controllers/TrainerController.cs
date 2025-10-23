@@ -107,6 +107,11 @@ namespace GymManagementPL.Controllers
         [HttpPost] // to know that this method is called on form submission
         public ActionResult TrainerEdit(int id,TrainerToUpdateViewModel updateTrainer)
         {
+            if(id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Trainer Id.";
+                return RedirectToAction(nameof(Index));
+            }
             if (!ModelState.IsValid)
             {
                 ModelState.AddModelError("DataInvalid", "Please correct the errors and try again.");
