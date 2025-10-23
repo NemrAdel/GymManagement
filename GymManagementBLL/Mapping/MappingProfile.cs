@@ -99,7 +99,7 @@ namespace GymManagementPL.Mapping
                 options.MapFrom(src => src));
 
 
-            CreateMap<TrainerToUpdateViewModel, Address>();
+            CreateMap<TrainerToUpdateViewModel, Address>().ReverseMap();
             CreateMap<TrainerToUpdateViewModel, Trainer>()
                 //.ForMember(dest => dest.Address.BuildingNumber, options =>
                 //options.MapFrom(src => src.BuildingNumber))
@@ -108,7 +108,7 @@ namespace GymManagementPL.Mapping
                 //.ForMember(dest => dest.Address.City, options =>
                 //options.MapFrom(src => src.City)).ReverseMap();
                 .ForMember(dest => dest.Address, options =>
-                options.MapFrom(src => src));
+                options.MapFrom(src => src)).ReverseMap();
         }
     }
 }

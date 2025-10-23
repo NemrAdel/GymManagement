@@ -46,8 +46,10 @@ namespace GymManagementBLL.BusinessServices.Implemintation
 
         public bool CreateTrainer(CreateTrainerViewModel createTrainer)
         {
-            var EmailExists = _unitOfWork.GetRepository<Trainer>().GetAll(t => t.Email == createTrainer.Email);
-            var PhoneExists = _unitOfWork.GetRepository<Trainer>().GetAll(t => t.Phone == createTrainer.Phone);
+            var EmailExists = _unitOfWork.GetRepository<Trainer>().GetAll(t => 
+            t.Email == createTrainer.Email);
+            var PhoneExists = _unitOfWork.GetRepository<Trainer>().GetAll(t =>
+            t.Phone == createTrainer.Phone);
             if (EmailExists.Any() || PhoneExists.Any()) return false;
 
             #region Manual Mapping
@@ -137,12 +139,12 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             {
                 var trainer = _unitOfWork.GetRepository<Trainer>().GetById(trainerId);
                 if (trainer is null) return false;
-                //var emailExists = _unitOfWork.GetRepository<Trainer>()
-                //    .GetAll(t => t.Email == trainerToUpdate.Email).Any();
-                //var phoneExists = _unitOfWork.GetRepository<Trainer>()
-                //    .GetAll(t => t.Phone == trainerToUpdate.Phone).Any();
+                var emailExists = _unitOfWork.GetRepository<Trainer>()
+                    .GetAll(t => t.Email == trainerToUpdate.Email && t.Id !=trainerId).Any();
+                var phoneExists = _unitOfWork.GetRepository<Trainer>()
+                    .GetAll(t => t.Phone == trainerToUpdate.Phone && t.Id != trainerId).Any();
 
-                if (IsEmailExist(trainer.Email) || IsPhoneExist(trainer.Phone)) return false;
+                if (emailExists || phoneExists) return false;
 
                 #region Manual Mapping
                 //trainer.Email = trainerToUpdate.Email;
@@ -156,6 +158,7 @@ namespace GymManagementBLL.BusinessServices.Implemintation
 
                 // Auto Mapping
                 _mapper.Map(trainerToUpdate, trainer);
+                trainer.UpdatedAt = DateTime.Now;
                 _unitOfWork.GetRepository<Trainer>().Update(trainer);
                 return _unitOfWork.SaveChanges() > 0;
             }
@@ -169,11 +172,11 @@ namespace GymManagementBLL.BusinessServices.Implemintation
         }
         private bool IsEmailExist(string email)
         {
-            return _unitOfWork.GetRepository<Member>().GetAll(x => x.Email == email).Any();
+            return _unitOfWork.GetRepository<Trainer>().GetAll(x => x.Email == email).Any();
         }
         private bool IsPhoneExist(string phone)
         {
-            return _unitOfWork.GetRepository<Member>().GetAll(x => x.Phone == phone).Any();
+            return _unitOfWork.GetRepository<Trainer>().GetAll(x => x.Phone == phone).Any();
         } // to use in phone and email validation as short method
 
 

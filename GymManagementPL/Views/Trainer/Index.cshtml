@@ -2,17 +2,22 @@
     <div class="container">
         <main role="main" class="pb-3">
 
-            @* <div id="Alert" class="alert alert-success alert-dismissible fade show">
+        @if (TempData["SuccessMessage"] is not null){
+            <div id="Alert" class="alert alert-success alert-dismissible fade show">
                 <i class="bi bi-check-circle-fill me-2"></i>
-                SuccessMessage
+                @TempData["SuccessMessage"]
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
+        }
+
+        @if (TempData["ErrorMessage"] is not null)
+        {
             <div id="Alert" class="alert alert-danger alert-dismissible fade show">
                 <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                ErrorMessage
+                @TempData["ErrorMessage"]
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div> *@
-
+            </div>
+        }
 
             <div class="container">
                 <header class="d-flex justify-content-between mt-5 mb-4 align-items-center">
@@ -72,7 +77,7 @@
                                                 <hr class="dropdown-divider">
                                             </li>
                                             <li>
-                                                <a href="Trainer/Edit/TrainerId"
+                                                    <a asp-controller="Trainer" asp-action="TrainerEdit" asp-route-id="@trainer.Id"
                                                    class="dropdown-item d-flex align-items-center gap-3">
                                                     <i class="bi bi-pencil text-primary-color"></i>
                                                     <span>Edit Details</span>
@@ -82,7 +87,7 @@
                                                 <hr class="dropdown-divider">
                                             </li>
                                             <li>
-                                                <a href="Trainer/Delete/TrainerId"
+                                                    <a asp-controller="Trainer" asp-action="Delete" asp-route-id="@trainer.Id"
                                                    class="dropdown-item d-flex align-items-center gap-3 text-danger">
                                                     <i class="bi bi-trash"></i>
                                                     <span>Delete</span>
