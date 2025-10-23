@@ -32,16 +32,16 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             #region Manual Mapping
             //var TrainersViewModels = trainers.Select(t => new TrainerViewModel
             //{
-            //    Name=t.Name,
-            //    Email =t.Email,
-            //    Phone=t.Phone,
-            //    Specialties =t.Specialties.ToString(),
+            //    Name = t.Name,
+            //    Email = t.Email,
+            //    Phone = t.Phone,
+            //    Specialties = t.Specialties.ToString(),
             //});
-            //return TrainersViewModels; 
+            //return TrainersViewModels;
             #endregion
 
             // Auto Mapping
-            return _mapper.Map<IEnumerable<Trainer>, IEnumerable<TrainerViewModel>>(trainers);
+            return _mapper.Map<IEnumerable<TrainerViewModel>>(trainers);
         }
 
         public bool CreateTrainer(CreateTrainerViewModel createTrainer)

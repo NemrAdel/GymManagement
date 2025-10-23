@@ -78,10 +78,10 @@ namespace GymManagementPL.Mapping
             CreateMap<IEnumerable<PlanViewModel>, IEnumerable<Plan>>();
             CreateMap<Plan, PlanToUpdateViewModel>();
 
+
+
             CreateMap<Trainer, TrainerViewModel>();
 
-
-            CreateMap<IEnumerable<Trainer>, IEnumerable<TrainerViewModel>>();
 
             CreateMap<CreateTrainerViewModel, Address>();
             CreateMap<CreateTrainerViewModel, Trainer>()

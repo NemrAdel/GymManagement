@@ -15,10 +15,10 @@ namespace GymManagementPL.Controllers
         public ActionResult Index()
         {
             var trainers=_trainerService.GetAllTrainers();
-            if(trainers is null)
-            {
-                Console.WriteLine("No Trainers Found");
-            }
+            //if(trainers is null)
+            //{
+            //    Console.WriteLine("No Trainers Found");
+            //}
             return View(trainers);
         }
         public ActionResult GetTrainers()
