@@ -2,11 +2,6 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model HomeAnalyticsViewModel
 
-
-
-
-
-
     <div class="container">
         <main role="main" class="pb-3">
             <div class="row">
@@ -73,10 +68,10 @@
                         </div>
                         }
 
-                        <div class="buttons my-4">
-                            <button class="get-started bg-primary-color text-white btn rounded-5 fw-medium px-3 py-2 me-5 border-2 border-primary-color">
+                        <div class="buttons my-4" >
+                            <a asp-controller="Member" asp-action="Index" class="get-started bg-primary-color text-white btn rounded-5 fw-medium px-3 py-2 me-5 border-2 border-primary-color">
                                 Get Started
-                            </button>
+                            </a>
 
                             <button class="explore-more border-primary-color btn rounded-5 fw-medium px-3 py-2 border-2 text-primary-color fw-medium">
                                 Explore More

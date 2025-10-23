@@ -75,7 +75,7 @@ namespace GymManagementPL.Mapping
                  
 
 
-            CreateMap<IEnumerable<PlanViewModel>, IEnumerable<Plan>>();
+            CreateMap<PlanViewModel, Plan>().ReverseMap();
             CreateMap<Plan, PlanToUpdateViewModel>();
 
 
