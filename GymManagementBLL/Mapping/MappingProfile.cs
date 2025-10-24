@@ -22,9 +22,9 @@ namespace GymManagementPL.Mapping
         private void MapSession()
         {
             CreateMap<Session, SessionViewModel>()
-    .ForMember(dest => dest.TrainerName, options => options.MapFrom(src => src.Trainers.Name))
-    .ForMember(dest => dest.CategoryName, options => options.MapFrom(src => src.Category.CategoryName))
-    .ForMember(dest => dest.AvailableSlots, options => options.Ignore());
+            .ForMember(dest => dest.TrainerName, options => options.MapFrom(src => src.Trainers.Name))
+            .ForMember(dest => dest.CategoryName, options => options.MapFrom(src => src.Category.CategoryName))
+            .ForMember(dest => dest.AvailableSlots, options => options.Ignore());
 
 
             CreateMap<CreateSessionViewModel, Session>();
