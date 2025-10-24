@@ -1,4 +1,5 @@
-﻿using GymManagementBLL.BusinessServices.Interfaces;
+﻿using GymManagementBLL.BusinessServices.Implemintation;
+using GymManagementBLL.BusinessServices.Interfaces;
 using GymManagementSystemBLL.View_Models.SessionVm;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,11 +10,13 @@ namespace GymManagementPL.Controllers
     {
         private readonly ISessionService _sessionService;
         private readonly ITrainerService _trainerService;
+        private readonly ICategoryService _categoryService;
 
-        public SessionController(ISessionService sessionService,ITrainerService trainerService)
+        public SessionController(ISessionService sessionService,ITrainerService trainerService,ICategoryService categoryService)
         {
             _sessionService = sessionService;
             _trainerService = trainerService;
+            _categoryService = categoryService;
         }
         public IActionResult Index()
         {
@@ -28,8 +31,38 @@ namespace GymManagementPL.Controllers
 
         public ActionResult Create()
         {
-
+            var trainers = _trainerService.GetAllTrainers();
+            var categoris = _categoryService.GetAllCategories();
+            var sessionWithCategory = categoris.Select(s => new SelectListItem
+            {
+                Value=s.Id.ToString(),
+                Text=s.Name
+            });
+            var sessionWithTrainer = trainers.Select(s => new SelectListItem
+            {
+                Value=s.Id.ToString(),
+                Text=s.Name
+            });
+            ViewBag.Category= sessionWithCategory;
+            ViewBag.Trainer= sessionWithTrainer;
             return View();
+        }
+
+        public ActionResult ConfirmCreate(CreateSessionViewModel createSession)
+        {
+                if (!ModelState.IsValid)
+                {
+                    ModelState.AddModelError("DataInvalid", "Please correct the errors and try again.");
+                    return View("Create", createSession);
+                }
+                var isCreated = _sessionService.CreateSession(createSession);
+                if (!isCreated)
+                {
+                    TempData["ErrorMessage"] = "Failed to create member.";
+                    return View(nameof(Create), createSession);
+                }
+                TempData["SuccessMessage"] = "Session created successfully.";
+                return RedirectToAction(nameof(Index));
         }
 
         public ActionResult Details(int id)
@@ -114,5 +147,6 @@ namespace GymManagementPL.Controllers
             TempData["SuccessMessage"] = "Session Deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
+
     }
 }

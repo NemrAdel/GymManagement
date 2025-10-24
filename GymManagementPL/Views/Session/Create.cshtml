@@ -5,7 +5,7 @@
         <p class="text-muted">Schedule a new training session</p>
     </header>
 
-    <form asp-action="Create" method="post">
+    <form asp-action="ConfirmCreate" method="post">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card shadow-sm border-0">
@@ -22,7 +22,7 @@
                                 <label asp-for="CategoryId" class="form-label fw-semibold">
                                     Category <span class="text-danger">*</span>
                                 </label>
-                                <select asp-for="CategoryId" class="form-select" >
+                                <select asp-for="CategoryId" asp-items=@ViewBag.Category class="form-select">
                                     <option value="">--Select Category--</option>
 
                                 </select>
@@ -33,11 +33,8 @@
                                 <label asp-for="TrainerId" class="form-label fw-semibold">
                                     Trainer <span class="text-danger">*</span>
                                 </label>
-                                <select asp-for="TrainerId" class="form-select">
-                                    <option value="">Select Trainer</option>
-                                    <option value="1">Trainer 01 </option>
-                                    <option value="2">Trainer 02 </option>
-                                    <option value="3">Trainer 03 </option>
+                                <select asp-for="TrainerId" asp-items=@ViewBag.Trainer class="form-select">
+                                    <option value="">--Select Trainer--</option>
                                 </select>
                                 <span asp-validation-for="TrainerId" class="text-danger"></span>
                             </div>
