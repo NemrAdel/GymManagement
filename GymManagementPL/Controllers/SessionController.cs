@@ -27,5 +27,21 @@ namespace GymManagementPL.Controllers
 
             return View();
         }
+
+        public ActionResult Details(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Id Try Again";
+                return RedirectToAction(nameof(Index));
+            }
+            var sessions = _sessionService.GetSessionsDetails(id);
+            if(sessions is null)
+            {
+                TempData["ErrorMessage"] = "Session Not Found";
+                return RedirectToAction(nameof(Index));
+            }
+            return View();
+        }
     }
 }

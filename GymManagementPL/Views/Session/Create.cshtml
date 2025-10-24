@@ -22,11 +22,9 @@
                                 <label asp-for="CategoryId" class="form-label fw-semibold">
                                     Category <span class="text-danger">*</span>
                                 </label>
-                                <select asp-for="CategoryId" class="form-select">
-                                    <option value="">Select Category</option>
-                                    <option value="1">Category 01 </option>
-                                    <option value="2">Category 02 </option>
-                                    <option value="3">Category 03 </option>
+                                <select asp-for="CategoryId" class="form-select" >
+                                    <option value="">--Select Category--</option>
+
                                 </select>
                                 <span asp-validation-for="CategoryId" class="text-danger"></span>
                             </div>
