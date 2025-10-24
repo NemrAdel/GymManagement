@@ -89,22 +89,22 @@ namespace GymManagementBLL.BusinessServices.Implemintation
 
 
             #region Manual Mapping (Tuple)
-            ////plan.Description = planToUpdate.Description;
-            ////plan.DurationDays = planToUpdate.DuratonDays;
-            ////plan.Price = planToUpdate.price;
+            //plan.Description = planToUpdate.Description;
+            //plan.DurationDays = planToUpdate.DuratonDays;
+            //plan.Price = planToUpdate.price;
 
-            //(plan.Description, plan.DurationDays, plan.Price) =
-            //    (planToUpdate.Description, planToUpdate.DuratonDays, planToUpdate.price);
-            //plan.UpdatedAt = DateTime.Now;
+            (plan.Description, plan.DurationDays, plan.Price) =
+                (planToUpdate.Description, planToUpdate.DuratonDays, planToUpdate.price);
+            plan.UpdatedAt = DateTime.Now;
             #endregion
 
             try
             {
 
                 // Auto Mapping
-                var planupdate =_mapper.Map<Plan>(planToUpdate); // as object to object mapping => same values form source to destination
-                _unitOfWork.GetRepository<Plan>().Update(planupdate);
-                plan.UpdatedAt = DateTime.Now;
+                //var planupdate =_mapper.Map<Plan>(planToUpdate); // as object to object mapping => same values form source to destination
+                _unitOfWork.GetRepository<Plan>().Update(plan);
+                //plan.UpdatedAt = DateTime.Now;
                 return _unitOfWork.SaveChanges() > 0;
             }
             catch (Exception)

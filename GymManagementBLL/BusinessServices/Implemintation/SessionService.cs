@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementBLL.BusinessServices.Implemintation
 {
-    internal class SessionService : ISessionService
+    public class SessionService : ISessionService
       
     {
         private readonly IUnitOfWork _uinitOfWork;
