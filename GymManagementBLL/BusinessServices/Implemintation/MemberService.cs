@@ -96,7 +96,7 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             //    Phone = createMember.Phone,
             //    DateOfBirth = createMember.DateOfBirth,
             //    Gender = createMember.Gender,
-            //    Address =
+            //    Address = new Address
             //    {
             //        BuildingNumber = createMember.BuildingNumber,
             //        City = createMember.City,
@@ -109,13 +109,14 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             //        BloodType = createMember.HealthRecord.BloodType,
             //        Note = createMember.HealthRecord.Note,
             //    }
-            //}; 
+            //};
             #endregion
 
             #region Auto Mapping
             var MappedMember = _mapper.Map<CreateMemberViewModel, Member>(createMember);
             #endregion
             // add to database
+
             _unitOfWork.GetRepository<Member>().Add(MappedMember);
             return _unitOfWork.SaveChanges()>0;
 
@@ -205,42 +206,37 @@ namespace GymManagementBLL.BusinessServices.Implemintation
 
         public bool UpdateMember(int memberId, MemberToUpdateViewModel memberToUpdate)
         {
-            try
-            {
-                var EmailExist = _unitOfWork.GetRepository<Member>()
-                    .GetAll(x => x.Email == memberToUpdate.Email).Any();
-                var PhoneExist = _unitOfWork.GetRepository<Member>()
-                    .GetAll(x => x.Phone == memberToUpdate.Phone).Any();
-                if (EmailExist || PhoneExist) return false;
+
+            var EmailExist = _unitOfWork.GetRepository<Member>()
+                .GetAll(x => x.Email == memberToUpdate.Email && x.Id != memberId).Any();
+            var PhoneExist = _unitOfWork.GetRepository<Member>()
+                    .GetAll(x => x.Phone == memberToUpdate.Phone && x.Id != memberId).Any();
+                if (EmailExist|| PhoneExist) return false;
 
                 var member = _unitOfWork.GetRepository<Member>().GetById(memberId);
                 if (member is null) return false;
-                #region Manual Mapping
+            #region Manual Mapping
 
-                //member.Email = memberToUpdate.Email;
-                //member.Phone = memberToUpdate.Phone;
-                //member.Address.BuildingNumber = memberToUpdate.BuildingNumber;
-                //member.Address.City = memberToUpdate.City;
-                //member.Address.Street = memberToUpdate.Street;
-                //member.UpdatedAt = DateTime.Now; // the updatedAt was allow null in database , createdAt was auto 
+            //member.Email = memberToUpdate.Email;
+            //member.Phone = memberToUpdate.Phone;
+            //member.Address.BuildingNumber = memberToUpdate.BuildingNumber;
+            //member.Address.City = memberToUpdate.City;
+            //member.Address.Street = memberToUpdate.Street;
+            #endregion
 
-                #endregion
+            #region Auto Mapping
+            var MemberUpdate = _mapper.Map(memberToUpdate,member);
+            #endregion
+            //member.UpdatedAt = DateTime.Now; // the updatedAt was allow null in database , createdAt was auto 
 
-                #region Auto Mapping
-                var MemberUpdate = _mapper.Map<MemberToUpdateViewModel, Member>(memberToUpdate);
-                #endregion
 
-                _unitOfWork.GetRepository<Member>().Update(MemberUpdate);
+            _unitOfWork.GetRepository<Member>().Update(MemberUpdate);
                 return _unitOfWork.SaveChanges() > 0;
-            }
-            catch (Exception)
-            {
-
-                return false;
-            }
-
-
         }
+
+
+
+        
         public bool RemoveMember(int memberId)
         {
             try
@@ -270,7 +266,7 @@ namespace GymManagementBLL.BusinessServices.Implemintation
         }
         private bool IsEmailExist(string email)
         {
-            return _unitOfWork.GetRepository<Member>().GetAll(x => x.Email == email).Any();
+            return _unitOfWork.GetRepository<Member>().GetAll(x => x.Email == email ).Any();
         }
         private bool IsPhoneExist(string phone)
         {
