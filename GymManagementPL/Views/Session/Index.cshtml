@@ -37,8 +37,7 @@ else if (TempData["ErrorMessage"] != null)
                         <!-- If Session Ongoing  bg-success -->
                         <!-- If Session Upcoming  bg-primary -->
                         <!-- If Session Completed  bg-secondary -->
-                        @if(session.Status=="Ongoing"){
-                        <div class="card-header text-white py-3 bg-success ">
+                        <div class="card-header text-white py-3 @(session.Status == "OnGoing" ? "bg-success" : session.Status == "Upcoming" ? "bg-primary" : "bg-secondary") ">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h5 class="mb-0">
                                     <i class="bi bi-calendar-event me-2"></i>@session.CategoryName
@@ -46,18 +45,7 @@ else if (TempData["ErrorMessage"] != null)
                                 <span class="badge bg-light text-dark">@session.Status</span>
                             </div>
                         </div>
-                        }
-                        else{
                         
-                                <div class="card-header text-white py-3 @(session.Status=="Upcoming"?"bg-primary":"bg-secondary") ">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h5 class="mb-0">
-                                        <i class="bi bi-calendar-event me-2"></i>@session.CategoryName
-                                    </h5>
-                                    <span class="badge bg-light text-dark">@session.Status</span>
-                                </div>
-                            </div>
-                        }
                         <div class="card-body">
                             <p class="text-muted mb-3">@session.Description</p>
 
@@ -116,16 +104,5 @@ else if (TempData["ErrorMessage"] != null)
 </div>
 
 @section Scripts {
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const alertBox = document.getElementById("Alert");
-            if (alertBox) {
-                setTimeout(() => {
-                    alertBox.style.transition = "opacity 0.5s ease";
-                    alertBox.style.opacity = "0";
-                    setTimeout(() => alertBox.remove(), 500);
-                }, 1500);
-            }
-        });
-    </script>
+    <partial name="_AlertBoxScript"></partial>
 }
