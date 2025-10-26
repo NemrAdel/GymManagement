@@ -141,17 +141,18 @@ namespace GymManagementPL.Controllers
             var trainers = _sessionService.GetAllTrainersForDropDown();
 
             var categoris = _sessionService.GetAllCategoriesForDropDown();
-            var sessionWithCategory = categoris.Select(s => new SelectListItem
-            {
-                Value = s.Id.ToString(),
-                Text = s.CategoryName
-            });
+            //var sessionWithCategory = categoris.Select(s => new SelectListItem
+            //{
+            //    Value = s.Id.ToString(),
+            //    Text = s.CategoryName
+            //}); // Another way
             var sessionWithTrainer = trainers.Select(s => new SelectListItem
             {
                 Value = s.Id.ToString(),
                 Text = s.Name
             });
-            ViewBag.Category = sessionWithCategory;
+            //ViewBag.Category = sessionWithCategory;
+            ViewBag.Category = new SelectList(categoris, "Id", "CategoryName");
             ViewBag.Trainer = sessionWithTrainer;
         }
         #endregion
