@@ -11,13 +11,11 @@ namespace GymManagementPL.Controllers
     {
         private readonly ISessionService _sessionService;
         private readonly ITrainerService _trainerService;
-        private readonly ICategoryService _categoryService;
 
-        public SessionController(ISessionService sessionService,ITrainerService trainerService,ICategoryService categoryService)
+        public SessionController(ISessionService sessionService,ITrainerService trainerService)
         {
             _sessionService = sessionService;
             _trainerService = trainerService;
-            _categoryService = categoryService;
         }
         public IActionResult Index()
         {
