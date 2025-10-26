@@ -1,4 +1,6 @@
-﻿using GymManagmentDAL.Models.Enums;
+﻿using AutoMapper;
+using GymManagmentDAL.Models.Enums;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +12,9 @@ namespace GymManagementBLL.View_Models
 {
     public class CreateMemberViewModel
     {
+        [Required(ErrorMessage = "Photo Is Required")]
+        [Display(Name = "Profile Photo")]
+        public IFormFile FilePhoto { get; set; } = null!;
 
         [Required(ErrorMessage ="Name is Required")]
         [StringLength(50,MinimumLength =2,ErrorMessage ="Name length between 2 and 50")]
