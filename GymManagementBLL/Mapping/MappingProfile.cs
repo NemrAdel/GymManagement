@@ -30,12 +30,17 @@ namespace GymManagementPL.Mapping
             CreateMap<CreateSessionViewModel, Session>();
 
             CreateMap<Session, UpdateSessionViewModel>().ReverseMap();
+
+            CreateMap<Category, CategorySelectViewModel>();
+
+            CreateMap<Trainer, TrainerSelectViewModel>();
         }
 
         private void MapMember()
         {
             CreateMap<CreateMemberViewModel, Member>()
-                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => new Address
+                .ForMember(dest => dest.Address, opt => 
+                opt.MapFrom(src => new Address
                 {
                     BuildingNumber = src.BuildingNumber,
                     Street = src.Street,
@@ -67,8 +72,10 @@ namespace GymManagementPL.Mapping
 
 
             CreateMap<MemberToUpdateViewModel, Member>()
-                .ForMember(dest => dest.Name, opt => opt.Ignore())
-                .ForMember(dest => dest.Photo, opt => opt.Ignore())
+                .ForMember(dest => dest.Name, opt 
+                => opt.Ignore())
+                .ForMember(dest => dest.Photo, opt
+                => opt.Ignore())
                 .AfterMap((src, dest) =>
                 {
                     dest.Address.BuildingNumber = src.BuildingNumber;
