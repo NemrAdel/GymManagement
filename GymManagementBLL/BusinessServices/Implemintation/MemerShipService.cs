@@ -32,7 +32,7 @@ namespace GymManagementBLL.BusinessServices.Implemintation
 
         public IEnumerable<MemberShipViewModel> GetAllActiveMemberShip()
         {
-            var memberships =_unitOfWork.
+            var memberships =_unitOfWork
             if (memberships is null || !memberships.Any())
                 return [];
 
