@@ -1,5 +1,7 @@
 ﻿using GymManagementBLL.BusinessServices.Interfaces;
+using GymManagementBLL.View_Models.MemberShipVM;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GymManagementPL.Controllers
 {
@@ -22,5 +24,38 @@ namespace GymManagementPL.Controllers
             
             return View(memberships);
         }
+        public ActionResult Create()
+        {
+            LoadDropDown();
+            return View();
+        }
+        public ActionResult ConfirmCreate(MemberShipViewModel createMemberShip)
+        {
+            if (!ModelState.IsValid)
+            {
+                LoadDropDown();
+                ModelState.AddModelError("DataInvalid", "Please correct the errors and try again.");
+                return View("Create", createMemberShip);
+            }
+            var isCreated = _memberShip.Create(createMemberShip);
+            if (!isCreated)
+            {
+                TempData["ErrorMessage"] = "Failed to create membership.";
+                return View(nameof(Create), createMemberShip);
+            }
+            LoadDropDown();
+            TempData["SuccessMessage"] = "Membership created successfully.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        #region Helper Method
+        private void LoadDropDown()
+        {
+            var members = _memberShip.GetMemberForDropDown();
+            var plans = _memberShip.GetPlanForDropDown();
+            ViewBag.Members = new SelectList(members,"Id","Name");
+            ViewBag.Plans = new SelectList(plans,"Id","Name");
+        }
+        #endregion
     }
 }

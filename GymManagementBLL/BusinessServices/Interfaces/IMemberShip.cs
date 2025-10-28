@@ -1,4 +1,5 @@
 ﻿using GymManagementBLL.View_Models.MemberShipVM;
+using GymManagmentDAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,8 @@ namespace GymManagementBLL.BusinessServices.Interfaces
     {
         IEnumerable<MemberShipViewModel> GetAllActiveMemberShip();
         bool Create(MemberShipViewModel membership);
+
+        IEnumerable<Member> GetMemberForDropDown();
+        IEnumerable<Plan> GetPlanForDropDown();
     }
 }

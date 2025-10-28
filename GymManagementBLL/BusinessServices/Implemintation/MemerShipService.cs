@@ -32,13 +32,23 @@ namespace GymManagementBLL.BusinessServices.Implemintation
 
         public IEnumerable<MemberShipViewModel> GetAllActiveMemberShip()
         {
-            var memberships =_unitOfWork
+            var memberships =_unitOfWork.MemberShipRepository.GetAllWithMemberAndPlan();
             if (memberships is null || !memberships.Any())
                 return [];
 
             var activeMemberships = memberships.Where(x => x.Status == "Active").ToList();
             return _mapper.Map<IEnumerable<MemberShipViewModel>>(activeMemberships);
 
+        }
+        public IEnumerable<Member> GetMemberForDropDown()
+        {
+            var members = _unitOfWork.GetRepository<Member>().GetAll();
+            return _mapper.Map<IEnumerable<Member>>(members);
+        }
+        public IEnumerable<Plan> GetPlanForDropDown()
+        {
+            var plans = _unitOfWork.GetRepository<Plan>().GetAll();
+            return _mapper.Map<IEnumerable<Plan>>(plans);
         }
     }
 }
