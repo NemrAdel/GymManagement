@@ -15,5 +15,7 @@ namespace GymManagementBLL.BusinessServices.Interfaces
 
         IEnumerable<Member> GetMemberForDropDown();
         IEnumerable<Plan> GetPlanForDropDown();
+
+        bool Cancel(int id);
     }
 }

@@ -25,6 +25,29 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             _mapper = mapper;
 
         }
+
+        public bool Cancel(int id)
+        {
+            try
+            {
+                if (id <= 0)
+                    return false;
+                var membership = _unitOfWork.MemberShipRepository.GetMemberShipByid(id);
+                if (membership is null)
+                    return false;
+                _unitOfWork.GetRepository<MemberShip>().Delete(membership);
+                var isCancelled = _unitOfWork.SaveChanges() > 0;
+                if (!isCancelled)
+                    return false;
+                return isCancelled;
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err);
+                return false;
+            }
+        }
+
         public bool Create(CreateMemberShipViewModel membership)
         {
             if (membership is null)

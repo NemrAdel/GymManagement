@@ -10,5 +10,7 @@ namespace GymManagementDAL.Repositories.Interfaces
     public interface IMemberShipRepository:IGenericRepository<MemberShip>
     {
         IEnumerable<MemberShip> GetAllWithMemberAndPlan();
+
+        MemberShip GetMemberShipByid(int id);
     }
 }

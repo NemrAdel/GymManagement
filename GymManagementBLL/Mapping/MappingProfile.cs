@@ -136,11 +136,11 @@ namespace GymManagementPL.Mapping
                 .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.CreatedAt.ToShortDateString()))
                 .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate.ToShortDateString()));
 
-            CreateMap<CreateMemberShipViewModel, MemberShip>()
-                .ForMember(dest => dest.MemberId, opt =>
-                opt.MapFrom(src => src.MemberId))
-                .ForMember(dest => dest.PlanId, opt =>
-                opt.MapFrom(src => src.PlanId));
+            CreateMap<CreateMemberShipViewModel, MemberShip>();
+                //.ForMember(dest => dest.MemberId, opt =>
+                //opt.MapFrom(src => src.MemberId))
+                //.ForMember(dest => dest.PlanId, opt =>
+                //opt.MapFrom(src => src.PlanId));
         }
 
 

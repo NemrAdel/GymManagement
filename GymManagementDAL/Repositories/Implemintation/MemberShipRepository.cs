@@ -23,5 +23,14 @@ namespace GymManagementDAL.Repositories.Implemintation
             return _dbContext.MemberShips.Include(x => x.Plan)
                 .Include(x => x.Member).ToList();
         }
+
+        public MemberShip GetMemberShipByid(int id)
+        {
+            var memebr=_dbContext.MemberShips.FirstOrDefault(x => x.MemberId == id);
+            if (memebr is null)
+                return null;
+            return memebr;
+
+        }
     }
 }

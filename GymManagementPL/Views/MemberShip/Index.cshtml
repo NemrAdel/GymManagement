@@ -15,7 +15,7 @@
     </header>
     @if(TempData["ErrorMessage"] is not null)
     {
-    <div id="Alert" class="alert alert-success alert-dismissible fade show">
+    <div id="Alert" class="alert alert-danger alert-dismissible fade show">
         <i class="bi bi-check-circle-fill me-2"></i>
             @TempData["ErrorMessage"]
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -56,7 +56,7 @@
                             <td>@item.EndDate</td>
                             <td>
                                 <div class="d-flex gap-1">
-                                    <form method="post" href="membership/cancel" class="m-0">
+                                    <form method="post" asp-action="Cancel" class="m-0">
                                         <input type="hidden" name="id" value="@item.MemberId" />
                                         <button type="submit" class="btn btn-sm btn-danger">
                                             <i class="fas fa-times"></i> Cancel

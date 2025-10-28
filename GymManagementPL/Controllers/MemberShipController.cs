@@ -48,6 +48,23 @@ namespace GymManagementPL.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult Cancel(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid Membership Id.";
+                return RedirectToAction(nameof(Index));
+            }
+            var isCancelled =_memberShip.Cancel(id);
+            if (!isCancelled)
+            {
+                TempData["ErrorMessage"] = "Failed to cancel membership.";
+                return RedirectToAction(nameof(Index));
+            }
+            TempData["SuccessMessage"] = "Membership cancelled successfully.";
+            return RedirectToAction(nameof(Index));
+        }
+
         #region Helper Method
         private void LoadDropDown()
         {
