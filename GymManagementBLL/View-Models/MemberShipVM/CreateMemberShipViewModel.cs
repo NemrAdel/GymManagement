@@ -9,10 +9,10 @@ namespace GymManagementBLL.View_Models.MemberShipVM
 {
     public class CreateMemberShipViewModel
     {
-        [Required(ErrorMessage ="Member Is Required")]
-        public string Member { get; set; } = null!;
+        public int MemberId { get; set; }
 
-        [Required(ErrorMessage = "Plan Is Required")]
-        public string Plan { get; set; } = null!;
+        public int PlanId { get; set; }
+
+
     }
 }

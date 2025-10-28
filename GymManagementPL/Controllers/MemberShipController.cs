@@ -29,12 +29,12 @@ namespace GymManagementPL.Controllers
             LoadDropDown();
             return View();
         }
-        public ActionResult ConfirmCreate(MemberShipViewModel createMemberShip)
+        public ActionResult ConfirmCreate(CreateMemberShipViewModel createMemberShip)
         {
             if (!ModelState.IsValid)
             {
                 LoadDropDown();
-                ModelState.AddModelError("DataInvalid", "Please correct the errors and try again.");
+                TempData["ErrorMessage"] = "Failed to create membership.";
                 return View("Create", createMemberShip);
             }
             var isCreated = _memberShip.Create(createMemberShip);

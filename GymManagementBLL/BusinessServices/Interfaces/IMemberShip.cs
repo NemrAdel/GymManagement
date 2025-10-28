@@ -11,7 +11,7 @@ namespace GymManagementBLL.BusinessServices.Interfaces
     public interface IMemberShip
     {
         IEnumerable<MemberShipViewModel> GetAllActiveMemberShip();
-        bool Create(MemberShipViewModel membership);
+        bool Create(CreateMemberShipViewModel membership);
 
         IEnumerable<Member> GetMemberForDropDown();
         IEnumerable<Plan> GetPlanForDropDown();

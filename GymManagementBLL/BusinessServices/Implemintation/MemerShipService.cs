@@ -25,9 +25,17 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             _mapper = mapper;
 
         }
-        public bool Create(MemberShipViewModel membership)
+        public bool Create(CreateMemberShipViewModel membership)
         {
-            throw new NotImplementedException();
+            if (membership is null)
+                return false;
+
+            var mappedMemberShip = _mapper.Map<MemberShip>(membership);
+            _unitOfWork.GetRepository<MemberShip>().Add(mappedMemberShip);
+            var isCreated = _unitOfWork.SaveChanges() > 0;
+            if (!isCreated)
+                return false;
+            return isCreated;
         }
 
         public IEnumerable<MemberShipViewModel> GetAllActiveMemberShip()
