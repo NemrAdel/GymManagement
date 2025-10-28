@@ -52,8 +52,17 @@ namespace GymManagementBLL.BusinessServices.Implemintation
         {
             if (membership is null)
                 return false;
-
+            var planid = membership.PlanId;
+            int Days = planid switch
+            {
+                1 => 30,
+                2 => 50,
+                3 => 90,
+                4 => 365,
+                _=>0
+            };
             var mappedMemberShip = _mapper.Map<MemberShip>(membership);
+            mappedMemberShip.EndDate = DateTime.Now.AddDays(Days);
             _unitOfWork.GetRepository<MemberShip>().Add(mappedMemberShip);
             var isCreated = _unitOfWork.SaveChanges() > 0;
             if (!isCreated)
