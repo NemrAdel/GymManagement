@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GymManagementBLL.View_Models;
+using GymManagementBLL.View_Models.MemberShipVM;
 using GymManagementBLL.View_Models.SessionVM;
 using GymManagementSystemBLL.View_Models.SessionVm;
 using GymManagmentDAL.Models;
@@ -15,6 +16,7 @@ namespace GymManagementPL.Mapping
             MapMember();
             MapPlan();
             MapTrainer();
+            MapMemberShip();
 
 
         }
@@ -124,6 +126,15 @@ namespace GymManagementPL.Mapping
                     dest.UpdatedAt = DateTime.Now;
                 });
 
+        }
+
+        private void MapMemberShip()
+        {
+            CreateMap<MemberShip,MemberShipViewModel>()
+                .ForMember(dest => dest.MName, opt => opt.MapFrom(src => src.Member.Name))
+                .ForMember(dest => dest.PName, opt => opt.MapFrom(src => src.Plan.Name))
+                .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.CreatedAt.ToShortDateString()))
+                .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate.ToShortDateString()));
         }
 
 

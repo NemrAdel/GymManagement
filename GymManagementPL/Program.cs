@@ -50,6 +50,10 @@ namespace GymManagementPL
 
             builder.Services.AddScoped<IAttachmentService, AttachmentService>();
 
+            builder.Services.AddScoped<IMemberShip, MemerShipService>();
+
+            builder.Services.AddScoped(typeof(IMemberShipRepository), typeof(MemberShipRepository));
+
 
             builder.Services.AddAutoMapper(X=>X.AddProfile(new MappingProfile()));
             #endregion

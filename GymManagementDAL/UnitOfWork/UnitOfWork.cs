@@ -14,14 +14,18 @@ namespace GymManagementDAL.UnitOfWork
     {
         private readonly Dictionary<Type, object> _repositories=new ();
         private readonly GymDbContext _dbContext;
+        private readonly IMemberShipRepository _memberShipRepository;
 
-        public UnitOfWork(GymDbContext dbContext, ISessionRepository sessionsRepository)
+        public UnitOfWork(GymDbContext dbContext, ISessionRepository sessionsRepository,IMemberShipRepository memberShipRepository)
         {
             _dbContext = dbContext;
             SessionsRepository = sessionsRepository;
+            _memberShipRepository = memberShipRepository;
         }   
 
         public ISessionRepository SessionsRepository { get; } 
+
+        public IMemberShipRepository MemberShipRepository { get; }
 
 
         public IGenericRepository<T> GetRepository<T>() where T : BaseEntity, new()
