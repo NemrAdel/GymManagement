@@ -52,7 +52,11 @@ namespace GymManagementPL
 
             builder.Services.AddScoped<IMemberShip, MemerShipService>();
 
+            builder.Services.AddScoped<IMemberSessionService, MemberSessionService>();
+
             builder.Services.AddScoped(typeof(IMemberShipRepository), typeof(MemberShipRepository));
+
+            builder.Services.AddScoped(typeof(IMemberSessionRepository), typeof(MemberSessionRepository));
 
 
             builder.Services.AddAutoMapper(X=>X.AddProfile(new MappingProfile()));
