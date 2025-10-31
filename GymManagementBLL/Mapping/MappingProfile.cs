@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using GymManagementBLL.View_Models;
 using GymManagementBLL.View_Models.CategoryVM.MemberSessionviewModel;
+using GymManagementBLL.View_Models.MemberSessionviewModel;
 using GymManagementBLL.View_Models.MemberShipVM;
 using GymManagementBLL.View_Models.SessionVM;
 using GymManagementSystemBLL.View_Models.SessionVm;
@@ -158,6 +159,12 @@ namespace GymManagementPL.Mapping
                 opt.MapFrom(src => src.Sessions.StartDate))
                 .ForMember(dest => dest.EndDate, opt =>
                 opt.MapFrom(src => src.Sessions.EndDate));
+
+            CreateMap<MemberSessions, OnGoingViewModel>()
+                .ForMember(dest => dest.Name, opt =>
+                opt.MapFrom(src => src.Members.Name))
+                .ForMember(dest => dest.Attendance, opt =>
+                opt.MapFrom(src => src.IsIttended.ToString()));
         }
 
 

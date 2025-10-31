@@ -16,5 +16,17 @@ namespace GymManagementPL.Controllers
             var sessions =_memberSessionService.GetAllMemberSession();
             return View(sessions);
         }
+
+        public ActionResult OnGoing(int id)
+        {
+            if (id <= 0)
+            {
+                TempData["ErrorMessage"] = "Invalid member ID.";
+                return RedirectToAction(nameof(Index));
+            }
+            var sessions = _memberSessionService.GetOnGoingSessionsBySessionId(id);
+            Console.WriteLine($"Count is {sessions.Count()}");
+            return View(sessions);
+        }
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Repositories.Implemintation
 {
-    public class MemberSessionRepository : GenericRepository<MemberSessions>,IMemberSessionRepository
+    public class MemberSessionRepository : GenericRepository<MemberSessions>, IMemberSessionRepository
     {
         private readonly GymDbContext _dbContext;
 
@@ -31,6 +31,11 @@ namespace GymManagementDAL.Repositories.Implemintation
         public int GetCountOfBookesSlots(int SessionId)
         {
             return _dbContext.MemberSessions.Count(ms => ms.SessionId == SessionId);
+        }
+
+        public IEnumerable<MemberSessions> GetMemberSessionswithMembers()
+        {
+            return _dbContext.MemberSessions.Include(x => x.Members).ToList();
         }
     }
 }
