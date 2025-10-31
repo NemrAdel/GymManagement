@@ -60,7 +60,12 @@ namespace GymManagementPL.Controllers
         public ActionResult Create(int id)
         {
             var members = _memberSessionService.GetMemberSessionWithMemberAndSession();
-            ViewBag.Members = new SelectList(members, "MemberId", "Members");
+            var SelectListMembers=members.Select(m => new SelectListItem
+            {
+                Value = m.MemberId.ToString(),
+                Text = m.Members.Name
+            }).ToList();
+            ViewBag.Members = new SelectList(SelectListMembers,"Value","Text");
             ViewBag.SessionId = id;
             return View();
         }
