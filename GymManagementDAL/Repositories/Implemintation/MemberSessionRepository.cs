@@ -49,12 +49,12 @@ namespace GymManagementDAL.Repositories.Implemintation
             return memberSession;
         }
 
-        public MemberSessions GetMemberSessionWithMemberAndSession()
+        public IEnumerable<MemberSessions> GetMemberSessionWithMemberAndSession()
         {
             var membersession=_dbContext.MemberSessions
                 .Include(ms => ms.Members)
                 .Include(ms => ms.Sessions)
-                .FirstOrDefault();
+                .ToList();
             return membersession;
         }
     }

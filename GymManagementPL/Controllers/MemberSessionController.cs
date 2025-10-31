@@ -42,9 +42,9 @@ namespace GymManagementPL.Controllers
             return RedirectToAction(nameof(OnGoing),new {id=id});
         }
 
-        public ActionResult UpComing()
+        public ActionResult UpComing(int id)
         {
-            var memberSession = _memberSessionService.GetMemberSessionsWithMembersAndSessions();
+            var memberSession = _memberSessionService.GetMembersWithSessionId(id);
             if (memberSession == null)
             {
                 TempData["ErrorMessage"] = "No upcoming sessions found.";
