@@ -48,5 +48,14 @@ namespace GymManagementDAL.Repositories.Implemintation
             _dbContext.SaveChanges();
             return memberSession;
         }
+
+        public MemberSessions GetMemberSessionWithMemberAndSession()
+        {
+            var membersession=_dbContext.MemberSessions
+                .Include(ms => ms.Members)
+                .Include(ms => ms.Sessions)
+                .FirstOrDefault();
+            return membersession;
+        }
     }
 }

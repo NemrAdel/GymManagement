@@ -62,5 +62,14 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             _unitOfWork.SaveChanges();
             return memberSession;
         }
+
+        public IEnumerable<UpComingViewModel> GetMemberSessionsWithMembersAndSessions()
+        {
+            var memberSessions = _unitOfWork.MemberSessionRepository.GetMemberSessionWithMemberAndSession();
+            if (memberSessions is null)
+                return [];
+            var mappedMemberSessions = _mapper.Map<IEnumerable<UpComingViewModel>>(memberSessions);
+            return mappedMemberSessions;
+        }
     }
 }

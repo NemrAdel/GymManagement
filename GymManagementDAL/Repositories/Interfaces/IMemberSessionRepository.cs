@@ -18,6 +18,9 @@ namespace GymManagementDAL.Repositories.Interfaces
         MemberSessions getMemberSessionById(int id);
 
 
+        MemberSessions GetMemberSessionWithMemberAndSession();
+
+
 
     }
 }

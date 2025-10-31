@@ -15,5 +15,7 @@ namespace GymManagementBLL.BusinessServices.Interfaces
         IEnumerable<OnGoingViewModel> GetOnGoingSessionsBySessionId(int id);
 
         MemberSessions Attendance(int id);
+
+        IEnumerable<UpComingViewModel> GetMemberSessionsWithMembersAndSessions();
     }
 }

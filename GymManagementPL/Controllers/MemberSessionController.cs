@@ -36,10 +36,21 @@ namespace GymManagementPL.Controllers
             if (id <= 0)
             {
                 TempData["ErrorMessage"] = "Invalid session ID.";
-                return RedirectToAction(nameof(OnGoing));
+                return RedirectToAction(nameof(OnGoing), new { id = id });
             }
             var result = _memberSessionService.Attendance(id);
-            return RedirectToAction(nameof(OnGoing));
+            return RedirectToAction(nameof(OnGoing),new {id=id});
+        }
+
+        public ActionResult UpComing()
+        {
+            var memberSession = _memberSessionService.GetMemberSessionsWithMembersAndSessions();
+            if (memberSession == null)
+            {
+                TempData["ErrorMessage"] = "No upcoming sessions found.";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(memberSession);
         }
     }
 }
