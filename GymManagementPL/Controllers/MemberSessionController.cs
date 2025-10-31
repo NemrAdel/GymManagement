@@ -1,6 +1,8 @@
 ﻿using GymManagementBLL.BusinessServices.Interfaces;
+using GymManagementBLL.View_Models.MemberSessionviewModel;
 using GymManagmentDAL.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GymManagementPL.Controllers
 {
@@ -17,7 +19,7 @@ namespace GymManagementPL.Controllers
             var sessions =_memberSessionService.GetAllMemberSession();
             return View(sessions);
         }
-
+        [HttpGet]
         public ActionResult OnGoing(int id)
         {
             if (id <= 0)
@@ -36,10 +38,10 @@ namespace GymManagementPL.Controllers
             if (id <= 0)
             {
                 TempData["ErrorMessage"] = "Invalid session ID.";
-                return RedirectToAction(nameof(OnGoing), new { id = id });
+                return RedirectToAction(nameof(OnGoing), new { id = id }  );
             }
             var result = _memberSessionService.Attendance(id);
-            return RedirectToAction(nameof(OnGoing),new {id=id});
+            return RedirectToAction(nameof(OnGoing), new { id = id });
         }
 
         public ActionResult UpComing(int id)
@@ -50,7 +52,34 @@ namespace GymManagementPL.Controllers
                 TempData["ErrorMessage"] = "No upcoming sessions found.";
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.SessionId = id;
+            Console.WriteLine(id);
             return View(memberSession);
+        }
+
+        public ActionResult Create(int id)
+        {
+            var members = _memberSessionService.GetMemberSessionWithMemberAndSession();
+            ViewBag.Members = new SelectList(members, "MemberId", "Members");
+            ViewBag.SessionId = id;
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Create(CreateMemberSessionViewModel createMember)
+        {
+            if (createMember == null)
+            {
+                TempData["ErrorMessage"] = "Invalid session data.";
+                return RedirectToAction(nameof(Create));
+            }
+            var isCreated = _memberSessionService.Create(createMember);
+            if (!isCreated)
+            {
+                TempData["ErrorMessage"] = "Session Failed To Create.";
+                return RedirectToAction(nameof(Create));
+            }
+            TempData["SuccessMessage"] = "Session created successfully.";
+            return View(nameof(Index));
         }
     }
 }

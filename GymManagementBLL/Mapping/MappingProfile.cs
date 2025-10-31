@@ -174,6 +174,15 @@ namespace GymManagementPL.Mapping
                 .ForMember(dest => dest.BookingDate, opt =>
                 opt.MapFrom(src => src.Sessions.StartDate.ToString()));
 
+
+            CreateMap<CreateMemberSessionViewModel, MemberSessions>()
+                .ForMember(dest => dest.MemberId, opt =>
+                opt.MapFrom(src => src.MemberId))
+                .ForMember(dest => dest.SessionId, opt =>
+                opt.MapFrom(src => src.SessionId));
+
+
+
         }
 
 

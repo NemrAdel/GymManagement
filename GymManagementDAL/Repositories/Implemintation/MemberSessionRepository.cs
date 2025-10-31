@@ -33,10 +33,10 @@ namespace GymManagementDAL.Repositories.Implemintation
             return _dbContext.MemberSessions.Count(ms => ms.SessionId == SessionId);
         }
 
-        public IEnumerable<MemberSessions> GetMemberSessionswithMembers()
-        {
-            return _dbContext.MemberSessions.Include(x => x.Members).ToList();
-        }
+        //public IEnumerable<MemberSessions> GetMemberSessionswithMembers()
+        //{
+        //    return _dbContext.MemberSessions.Include(x => x.Members).ToList();
+        //}
 
         public MemberSessions getMemberSessionById(int id)
         {
@@ -47,6 +47,13 @@ namespace GymManagementDAL.Repositories.Implemintation
             }
             _dbContext.SaveChanges();
             return memberSession;
+        }
+
+        public IEnumerable<MemberSessions> GetMemberSessionswithMembers()
+        {
+            return _dbContext.MemberSessions
+            .Include(ms => ms.Members).ToList();
+            
         }
 
         public IEnumerable<MemberSessions> GetMemberSessionWithMemberAndSession()
