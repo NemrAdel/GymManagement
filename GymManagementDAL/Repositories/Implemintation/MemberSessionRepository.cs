@@ -37,5 +37,16 @@ namespace GymManagementDAL.Repositories.Implemintation
         {
             return _dbContext.MemberSessions.Include(x => x.Members).ToList();
         }
+
+        public MemberSessions getMemberSessionById(int id)
+        {
+            var memberSession = _dbContext.MemberSessions.FirstOrDefault(ms => ms.MemberId == id);
+            if (memberSession == null)
+            {
+                Console.WriteLine($"MemberSession not found. {id}");
+            }
+            _dbContext.SaveChanges();
+            return memberSession;
+        }
     }
 }

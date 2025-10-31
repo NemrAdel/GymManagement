@@ -50,8 +50,9 @@
                                         </span>
                                     }
                                     <!-- If Member Not Attended -->
-                                    @if(members.Attendance==false){
-                                    <form asp-action="IsAttended" asp-route-id="id" method="post" class="d-inline">
+                                    @if(members.Attendance==false)
+                                    {
+                                    <form asp-action="OnGoing" asp-route-id=@members.Id method="post" class="d-inline">
 
                                         <button type="submit" class="btn btn-outline-success btn-sm">
                                             <i class="bi bi-check-circle me-1"></i> Mark as Attended

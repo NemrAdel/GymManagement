@@ -5,6 +5,7 @@ using GymManagementBLL.View_Models.MemberSessionviewModel;
 using GymManagementDAL.Repositories.Interfaces;
 using GymManagementDAL.UnitOfWork;
 using GymManagmentDAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,20 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             }
             var mappedOnGoingSessions = _mapper.Map<IEnumerable<OnGoingViewModel>>(onGoingSessions);
             return mappedOnGoingSessions;
+        }
+
+        public MemberSessions Attendance(int id)
+        {
+            var memberSession = _unitOfWork.MemberSessionRepository.getMemberSessionById(id);
+            if (memberSession == null)
+            {
+                Console.WriteLine($"MemberSession not found. {id}");
+                return null;
+            }
+            memberSession.IsIttended = !memberSession.IsIttended;
+            _unitOfWork.GetRepository<MemberSessions>().Update(memberSession);
+            _unitOfWork.SaveChanges();
+            return memberSession;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using GymManagementBLL.View_Models.CategoryVM.MemberSessionviewModel;
 using GymManagementBLL.View_Models.MemberSessionviewModel;
+using GymManagmentDAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace GymManagementBLL.BusinessServices.Interfaces
     {
         IEnumerable<MemberSessionViewModel> GetAllMemberSession();
         IEnumerable<OnGoingViewModel> GetOnGoingSessionsBySessionId(int id);
+
+        MemberSessions Attendance(int id);
     }
 }

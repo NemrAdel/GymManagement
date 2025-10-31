@@ -8,6 +8,7 @@ namespace GymManagementBLL.View_Models.MemberSessionviewModel
 {
     public class OnGoingViewModel
     {
+        public int Id { get; set; }
         public string Name { get; set; }=null!;
 
         public bool Attendance { get; set; }

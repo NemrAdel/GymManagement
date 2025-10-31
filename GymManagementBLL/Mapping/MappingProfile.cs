@@ -164,7 +164,9 @@ namespace GymManagementPL.Mapping
                 .ForMember(dest => dest.Name, opt =>
                 opt.MapFrom(src => src.Members.Name))
                 .ForMember(dest => dest.Attendance, opt =>
-                opt.MapFrom(src => src.IsIttended.ToString()));
+                opt.MapFrom(src => src.IsIttended.ToString()))
+                .ForMember(dest => dest.Id, opt =>
+                opt.MapFrom(src => src.MemberId));
         }
 
 

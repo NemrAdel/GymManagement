@@ -15,6 +15,8 @@ namespace GymManagementDAL.Repositories.Interfaces
 
         public IEnumerable<MemberSessions> GetMemberSessionswithMembers();
 
+        MemberSessions getMemberSessionById(int id);
+
 
 
     }
