@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using GymManagementBLL.View_Models;
+using GymManagementBLL.View_Models.CategoryVM.MemberSessionviewModel;
+using GymManagementBLL.View_Models.MemberSessionviewModel;
+using GymManagementBLL.View_Models.MemberShipVM;
 using GymManagementBLL.View_Models.SessionVM;
 using GymManagementSystemBLL.View_Models.SessionVm;
 using GymManagmentDAL.Models;
@@ -15,6 +18,8 @@ namespace GymManagementPL.Mapping
             MapMember();
             MapPlan();
             MapTrainer();
+            MapMemberShip();
+            MapMemberSession();
 
 
         }
@@ -30,12 +35,17 @@ namespace GymManagementPL.Mapping
             CreateMap<CreateSessionViewModel, Session>();
 
             CreateMap<Session, UpdateSessionViewModel>().ReverseMap();
+
+            CreateMap<Category, CategorySelectViewModel>();
+
+            CreateMap<Trainer, TrainerSelectViewModel>();
         }
 
         private void MapMember()
         {
             CreateMap<CreateMemberViewModel, Member>()
-                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => new Address
+                .ForMember(dest => dest.Address, opt => 
+                opt.MapFrom(src => new Address
                 {
                     BuildingNumber = src.BuildingNumber,
                     Street = src.Street,
@@ -67,8 +77,10 @@ namespace GymManagementPL.Mapping
 
 
             CreateMap<MemberToUpdateViewModel, Member>()
-                .ForMember(dest => dest.Name, opt => opt.Ignore())
-                .ForMember(dest => dest.Photo, opt => opt.Ignore())
+                .ForMember(dest => dest.Name, opt 
+                => opt.Ignore())
+                .ForMember(dest => dest.Photo, opt
+                => opt.Ignore())
                 .AfterMap((src, dest) =>
                 {
                     dest.Address.BuildingNumber = src.BuildingNumber;
@@ -116,6 +128,64 @@ namespace GymManagementPL.Mapping
                     dest.Address.Street = src.Street;
                     dest.UpdatedAt = DateTime.Now;
                 });
+
+        }
+
+        private void MapMemberShip()
+        {
+            CreateMap<MemberShip,MemberShipViewModel>()
+                .ForMember(dest => dest.MName, opt => opt.MapFrom(src => src.Member.Name))
+                .ForMember(dest => dest.PName, opt => opt.MapFrom(src => src.Plan.Name))
+                .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.CreatedAt.ToShortDateString()))
+                .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate.ToShortDateString()));
+
+            CreateMap<CreateMemberShipViewModel, MemberShip>();
+                //.ForMember(dest => dest.MemberId, opt =>
+                //opt.MapFrom(src => src.MemberId))
+                //.ForMember(dest => dest.PlanId, opt =>
+                //opt.MapFrom(src => src.PlanId));
+        }
+
+        private void MapMemberSession()
+        {
+            CreateMap<Session, MemberSessionViewModel>()
+                .ForMember(dest => dest.TrainerName, opt =>
+                opt.MapFrom(src => src.Trainers.Name))
+                .ForMember(dest => dest.CategoryName, opt =>
+                opt.MapFrom(src => src.Category.CategoryName))
+                .ForMember(dest => dest.Capacity, opt =>
+                opt.MapFrom(src => src.Capacity))
+                .ForMember(dest => dest.StartDate, opt =>
+                opt.MapFrom(src => src.StartDate))
+                .ForMember(dest => dest.EndDate, opt =>
+                opt.MapFrom(src => src.EndDate))
+                .ForMember(dest => dest.SessionId, opt =>
+                opt.MapFrom(src => src.Id));
+
+            CreateMap<MemberSessions, OnGoingViewModel>()
+                .ForMember(dest => dest.Name, opt =>
+                opt.MapFrom(src => src.Members.Name))
+                .ForMember(dest => dest.Attendance, opt =>
+                opt.MapFrom(src => src.IsIttended.ToString()))
+                .ForMember(dest => dest.Id, opt =>
+                opt.MapFrom(src => src.MemberId));
+
+            CreateMap<MemberSessions, UpComingViewModel>()
+                .ForMember(dest => dest.Name, opt =>
+                opt.MapFrom(src => src.Members.Name))
+                .ForMember(dest => dest.BookingDate, opt =>
+                opt.MapFrom(src => src.Sessions.StartDate.ToString()))
+                .ForMember(dest => dest.Id, opt =>
+                opt.MapFrom(src => src.MemberId));
+
+
+            CreateMap<CreateMemberSessionViewModel, MemberSessions>()
+                .ForMember(dest => dest.MemberId, opt =>
+                opt.MapFrom(src => src.MemberId))
+                .ForMember(dest => dest.SessionId, opt =>
+                opt.MapFrom(src => src.SessionId));
+
+
 
         }
 

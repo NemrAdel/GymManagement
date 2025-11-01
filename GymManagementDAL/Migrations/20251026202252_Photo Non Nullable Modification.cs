@@ -5,14 +5,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GymManagementDAL.Migrations
 {
-
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class PhotoNonNullableModification : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
@@ -95,7 +93,7 @@ namespace GymManagementDAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     JoinDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(50)", nullable: false),

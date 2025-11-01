@@ -1,6 +1,7 @@
 ﻿using GymManagementBLL.BusinessServices.Implemintation;
 using GymManagementBLL.BusinessServices.Interfaces;
 using GymManagementSystemBLL.View_Models.SessionVm;
+using GymManagmentDAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -10,13 +11,11 @@ namespace GymManagementPL.Controllers
     {
         private readonly ISessionService _sessionService;
         private readonly ITrainerService _trainerService;
-        private readonly ICategoryService _categoryService;
 
-        public SessionController(ISessionService sessionService,ITrainerService trainerService,ICategoryService categoryService)
+        public SessionController(ISessionService sessionService,ITrainerService trainerService)
         {
             _sessionService = sessionService;
             _trainerService = trainerService;
-            _categoryService = categoryService;
         }
         public IActionResult Index()
         {
@@ -31,20 +30,7 @@ namespace GymManagementPL.Controllers
 
         public ActionResult Create()
         {
-            var trainers = _trainerService.GetAllTrainers();
-            var categoris = _categoryService.GetAllCategories();
-            var sessionWithCategory = categoris.Select(s => new SelectListItem
-            {
-                Value=s.Id.ToString(),
-                Text=s.Name
-            });
-            var sessionWithTrainer = trainers.Select(s => new SelectListItem
-            {
-                Value=s.Id.ToString(),
-                Text=s.Name
-            });
-            ViewBag.Category= sessionWithCategory;
-            ViewBag.Trainer= sessionWithTrainer;
+            LoadDropDowns();
             return View();
         }
 
@@ -52,6 +38,7 @@ namespace GymManagementPL.Controllers
         {
                 if (!ModelState.IsValid)
                 {
+                    LoadDropDowns();
                     ModelState.AddModelError("DataInvalid", "Please correct the errors and try again.");
                     return View("Create", createSession);
                 }
@@ -61,6 +48,7 @@ namespace GymManagementPL.Controllers
                     TempData["ErrorMessage"] = "Failed to create member.";
                     return View(nameof(Create), createSession);
                 }
+                LoadDropDowns();
                 TempData["SuccessMessage"] = "Session created successfully.";
                 return RedirectToAction(nameof(Index));
         }
@@ -147,6 +135,27 @@ namespace GymManagementPL.Controllers
             TempData["SuccessMessage"] = "Session Deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
+        #region Helper Method
+        private void LoadDropDowns()
+        {
+            var trainers = _sessionService.GetAllTrainersForDropDown();
+
+            var categoris = _sessionService.GetAllCategoriesForDropDown();
+            //var sessionWithCategory = categoris.Select(s => new SelectListItem
+            //{
+            //    Value = s.Id.ToString(),
+            //    Text = s.CategoryName
+            //}); // Another way
+            var sessionWithTrainer = trainers.Select(s => new SelectListItem
+            {
+                Value = s.Id.ToString(),
+                Text = s.Name
+            });
+            //ViewBag.Category = sessionWithCategory;
+            ViewBag.Category = new SelectList(categoris, "Id", "CategoryName");
+            ViewBag.Trainer = sessionWithTrainer;
+        }
+        #endregion
 
     }
 }

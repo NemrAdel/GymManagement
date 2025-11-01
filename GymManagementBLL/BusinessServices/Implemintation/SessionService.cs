@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿
+using AutoMapper;
 using GymManagementBLL.BusinessServices.Interfaces;
 using GymManagementBLL.View_Models.SessionVM;
 using GymManagementDAL.UnitOfWork;
@@ -148,6 +149,18 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             return _uinitOfWork.SaveChanges() > 0;
         }
 
+        public IEnumerable<CategorySelectViewModel> GetAllCategoriesForDropDown()
+        {
+            var Categories = _uinitOfWork.GetRepository<Category>().GetAll();
+            return _mapper.Map<IEnumerable<Category>,IEnumerable<CategorySelectViewModel>>(Categories);
+        }
+
+        public IEnumerable<TrainerSelectViewModel> GetAllTrainersForDropDown()
+        {
+           var Trainers=_uinitOfWork.GetRepository<Trainer>().GetAll();
+            return _mapper.Map<IEnumerable<Trainer>,IEnumerable<TrainerSelectViewModel>>(Trainers);
+        }
+
         #region HelperMethod
         private bool  IsTrainerExist(int trainerId)
         {
@@ -182,7 +195,6 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             if (HasActiveBooking) return false; 
             return true;
         }
-
 
         #endregion
     }

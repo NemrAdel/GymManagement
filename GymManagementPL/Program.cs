@@ -1,5 +1,6 @@
 using GymManagementBLL.BusinessServices.Implemintation;
 using GymManagementBLL.BusinessServices.Interfaces;
+using GymManagementBLL.Helpers;
 using GymManagementDAL.Data.SeedDara;
 using GymManagementDAL.Repositories.Implemintation;
 using GymManagementDAL.Repositories.Interfaces;
@@ -47,7 +48,16 @@ namespace GymManagementPL
 
             builder.Services.AddScoped<ISessionService, SessionService>();
 
-            builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<IAttachmentService, AttachmentService>();
+
+            builder.Services.AddScoped<IMemberShip, MemerShipService>();
+
+            builder.Services.AddScoped<IMemberSessionService, MemberSessionService>();
+
+            builder.Services.AddScoped(typeof(IMemberShipRepository), typeof(MemberShipRepository));
+
+            builder.Services.AddScoped(typeof(IMemberSessionRepository), typeof(MemberSessionRepository));
+
 
             builder.Services.AddAutoMapper(X=>X.AddProfile(new MappingProfile()));
             #endregion
