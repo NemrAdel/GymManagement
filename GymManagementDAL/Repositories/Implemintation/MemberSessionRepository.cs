@@ -64,5 +64,13 @@ namespace GymManagementDAL.Repositories.Implemintation
                 .ToList().Distinct();
             return membersession;
         }
+
+        public IEnumerable<MemberShip> GetAllActiveMembers()
+        {
+            var activeMembers = _dbContext.MemberShips
+                .Include(m => m.Member);
+                
+            return activeMembers;
+        }
     }
 }

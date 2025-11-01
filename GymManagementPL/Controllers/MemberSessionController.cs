@@ -9,10 +9,12 @@ namespace GymManagementPL.Controllers
     public class MemberSessionController : Controller
     {
         private readonly IMemberSessionService _memberSessionService;
+        private readonly IMemberShip _memberShip;
 
-        public MemberSessionController(IMemberSessionService memberSessionService)
+        public MemberSessionController(IMemberSessionService memberSessionService,IMemberShip memberShip)
         {
             _memberSessionService = memberSessionService;
+            _memberShip = memberShip;
         }
         public IActionResult Index()
         {
@@ -53,19 +55,17 @@ namespace GymManagementPL.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.SessionId = id;
-            Console.WriteLine(id);
+            foreach (var member in memberSession)
+            {
+                Console.WriteLine($"Member Name: {member.Name}, Booking Date: {member.BookingDate}");
+            }
+            Console.WriteLine($"------------------------------------{memberSession}");
             return View(memberSession);
         }
 
         public ActionResult Create(int id)
         {
-            var members = _memberSessionService.GetMemberSessionWithMemberAndSession().Distinct();
-            var SelectListMembers=members.Select(m => new SelectListItem
-            {
-                Value = m.MemberId.ToString(),
-                Text = m.Members.Name
-            }).ToList().Distinct();
-            ViewBag.Members = new SelectList(SelectListMembers,"Value","Text");
+            LoadDropDownData();
             ViewBag.SessionId = id;
             return View();
         }
@@ -80,21 +80,25 @@ namespace GymManagementPL.Controllers
             if (!ModelState.IsValid)
             {
                 TempData["ErrorMessage"] = "Please correct the form errors.";
+                LoadDropDownData();
                 return View(createMember);
             }
             var memberExists = _memberSessionService.GetMemberSessionWithMemberAndSession()
                 .Any(ms => ms.MemberId == createMember.MemberId && ms.SessionId==createMember.SessionId);
             if (memberExists)
             {
+                LoadDropDownData();
                 TempData["ErrorMessage"] = "Member is already enrolled in this session.";
                 return View(createMember);
             }
                 var isCreated = _memberSessionService.Create(createMember);
             if (!isCreated)
             {
+                LoadDropDownData();
                 TempData["ErrorMessage"] = "Session Failed To Create.";
                 return View(createMember);
             }
+            LoadDropDownData();
             TempData["SuccessMessage"] = "Session created successfully.";
             return RedirectToAction(nameof(UpComing),new { id=createMember.SessionId});
         }
@@ -111,5 +115,20 @@ namespace GymManagementPL.Controllers
             var cancelMemberSession=_memberSessionService.Cancel(memberSession.Id);
             return RedirectToAction(nameof(UpComing));
         }
+
+        #region Helper Method
+        private void LoadDropDownData()
+        {
+            var members = _memberSessionService.AllActiveMember();
+            var SelectListMembers = members.Select(m => new SelectListItem
+            {
+                Value = m.MemberId.ToString(),
+                Text = m.Member.Name
+            }).ToList().Distinct();
+            var Data=new SelectList(SelectListMembers, "Value", "Text");
+            ViewBag.Members = Data;
+        }
+        #endregion
     }
+
 }

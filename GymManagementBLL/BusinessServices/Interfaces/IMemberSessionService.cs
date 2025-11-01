@@ -22,5 +22,7 @@ namespace GymManagementBLL.BusinessServices.Interfaces
         bool Create(CreateMemberSessionViewModel createMember);
 
         bool Cancel(int id);
+
+        IEnumerable<MemberShip> AllActiveMember();
     }
 }

@@ -21,6 +21,9 @@ namespace GymManagementDAL.Repositories.Interfaces
         IEnumerable<MemberSessions> GetMemberSessionWithMemberAndSession();
 
 
+        IEnumerable<MemberShip> GetAllActiveMembers();
+
+
 
     }
 }

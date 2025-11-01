@@ -116,5 +116,11 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             _unitOfWork.GetRepository<MemberSessions>().Delete(memberSession);
             return _unitOfWork.SaveChanges() > 0;
         }
+
+        public IEnumerable<MemberShip> AllActiveMember()
+        {
+            var activeMembers = _unitOfWork.MemberSessionRepository.GetAllActiveMembers();
+            return activeMembers;
+        }
     }
 }
