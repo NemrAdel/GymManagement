@@ -18,14 +18,14 @@ namespace GymManagementDAL.Repositories.Implemintation
         {
             _dbContext = dbContext;
         }
-        public IEnumerable<MemberSessions> GetAllMemberSessionsWithMemberAndSessionAndCategoryAndTrainer()
+        public IEnumerable<Session> GetAllMemberSessionsWithMemberAndSessionAndCategoryAndTrainer()
         {
-            return _dbContext.MemberSessions.Include(m=>m.Members)
-                .Include(ms=>ms.Sessions)
-                .ThenInclude(s=>s.Category)
-                .Include(ms=>ms.Sessions)
-                .ThenInclude(s=>s.Trainers)
-                .ToList();
+            return _dbContext.Sessions
+                    .Include(s => s.Category)
+                    .Include(s => s.Trainers)
+                    .Include(s => s.MemberSessions)
+                        .ThenInclude(ms => ms.Members)
+                    .ToList();
         }
 
         public int GetCountOfBookesSlots(int SessionId)
@@ -61,7 +61,7 @@ namespace GymManagementDAL.Repositories.Implemintation
             var membersession=_dbContext.MemberSessions
                 .Include(ms => ms.Members)
                 .Include(ms => ms.Sessions)
-                .ToList();
+                .ToList().Distinct();
             return membersession;
         }
     }

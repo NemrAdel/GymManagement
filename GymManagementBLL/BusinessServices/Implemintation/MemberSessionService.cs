@@ -79,14 +79,23 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             return memberSessions;
         }
 
-        public bool Create(CreateMemberSessionViewModel createMember)
+        public bool Create( CreateMemberSessionViewModel createMember)
         {
             if (createMember == null)
             {
                 return false;
             }
-            var Members = _unitOfWork.MemberSessionRepository.GetMemberSessionswithMembers();
-            var mappedMemberSession = _mapper.Map<MemberSessions>(Members);
+            var mappedMemberSession = new MemberSessions
+            {
+                IsIttended = false,
+                MemberId = createMember.MemberId,
+                CreatedAt = DateTime.Now,
+                SessionId = createMember.SessionId,
+
+            };
+            //mappedMemberSession.IsIttended = false;
+            //mappedMemberSession.CreatedAt= DateTime.Now;
+            //mappedMemberSession.SessionId = sessionid;
             _unitOfWork.GetRepository<MemberSessions>().Add(mappedMemberSession);
             return _unitOfWork.SaveChanges()>0;
         }
@@ -95,6 +104,17 @@ namespace GymManagementBLL.BusinessServices.Implemintation
         {
             var memberSessions = _unitOfWork.MemberSessionRepository.GetMemberSessionWithMemberAndSession();
             return memberSessions;
+        }
+
+        public bool Cancel(int id)
+        {
+            var memberSession = _unitOfWork.GetRepository<MemberSessions>().GetById(id);
+            if (memberSession == null)
+            {
+                return false;
+            }
+            _unitOfWork.GetRepository<MemberSessions>().Delete(memberSession);
+            return _unitOfWork.SaveChanges() > 0;
         }
     }
 }

@@ -148,17 +148,19 @@ namespace GymManagementPL.Mapping
 
         private void MapMemberSession()
         {
-            CreateMap<MemberSessions, MemberSessionViewModel>()
+            CreateMap<Session, MemberSessionViewModel>()
                 .ForMember(dest => dest.TrainerName, opt =>
-                opt.MapFrom(src => src.Sessions.Trainers.Name))
+                opt.MapFrom(src => src.Trainers.Name))
                 .ForMember(dest => dest.CategoryName, opt =>
-                opt.MapFrom(src => src.Sessions.Category.CategoryName))
+                opt.MapFrom(src => src.Category.CategoryName))
                 .ForMember(dest => dest.Capacity, opt =>
-                opt.MapFrom(src => src.Sessions.Capacity))
+                opt.MapFrom(src => src.Capacity))
                 .ForMember(dest => dest.StartDate, opt =>
-                opt.MapFrom(src => src.Sessions.StartDate))
+                opt.MapFrom(src => src.StartDate))
                 .ForMember(dest => dest.EndDate, opt =>
-                opt.MapFrom(src => src.Sessions.EndDate));
+                opt.MapFrom(src => src.EndDate))
+                .ForMember(dest => dest.SessionId, opt =>
+                opt.MapFrom(src => src.Id));
 
             CreateMap<MemberSessions, OnGoingViewModel>()
                 .ForMember(dest => dest.Name, opt =>
@@ -172,7 +174,9 @@ namespace GymManagementPL.Mapping
                 .ForMember(dest => dest.Name, opt =>
                 opt.MapFrom(src => src.Members.Name))
                 .ForMember(dest => dest.BookingDate, opt =>
-                opt.MapFrom(src => src.Sessions.StartDate.ToString()));
+                opt.MapFrom(src => src.Sessions.StartDate.ToString()))
+                .ForMember(dest => dest.Id, opt =>
+                opt.MapFrom(src => src.MemberId));
 
 
             CreateMap<CreateMemberSessionViewModel, MemberSessions>()

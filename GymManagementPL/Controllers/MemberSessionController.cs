@@ -59,12 +59,12 @@ namespace GymManagementPL.Controllers
 
         public ActionResult Create(int id)
         {
-            var members = _memberSessionService.GetMemberSessionWithMemberAndSession();
+            var members = _memberSessionService.GetMemberSessionWithMemberAndSession().Distinct();
             var SelectListMembers=members.Select(m => new SelectListItem
             {
                 Value = m.MemberId.ToString(),
                 Text = m.Members.Name
-            }).ToList();
+            }).ToList().Distinct();
             ViewBag.Members = new SelectList(SelectListMembers,"Value","Text");
             ViewBag.SessionId = id;
             return View();
@@ -77,14 +77,39 @@ namespace GymManagementPL.Controllers
                 TempData["ErrorMessage"] = "Invalid session data.";
                 return RedirectToAction(nameof(Create));
             }
-            var isCreated = _memberSessionService.Create(createMember);
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Please correct the form errors.";
+                return View(createMember);
+            }
+            var memberExists = _memberSessionService.GetMemberSessionWithMemberAndSession()
+                .Any(ms => ms.MemberId == createMember.MemberId && ms.SessionId==createMember.SessionId);
+            if (memberExists)
+            {
+                TempData["ErrorMessage"] = "Member is already enrolled in this session.";
+                return View(createMember);
+            }
+                var isCreated = _memberSessionService.Create(createMember);
             if (!isCreated)
             {
                 TempData["ErrorMessage"] = "Session Failed To Create.";
-                return RedirectToAction(nameof(Create));
+                return View(createMember);
             }
             TempData["SuccessMessage"] = "Session created successfully.";
-            return View(nameof(Index));
+            return RedirectToAction(nameof(UpComing),new { id=createMember.SessionId});
+        }
+
+        public ActionResult Cancel(int id)
+        {
+            var memberSessions = _memberSessionService.GetMemberSessionWithMemberAndSession();
+            var memberSession = memberSessions.FirstOrDefault(ms => ms.MemberId == id);
+            if (memberSession == null)
+            {
+                TempData["ErrorMessage"] = "Member session not found.";
+                return RedirectToAction(nameof(UpComing),new {id=memberSession.SessionId});
+            }
+            var cancelMemberSession=_memberSessionService.Cancel(memberSession.Id);
+            return RedirectToAction(nameof(UpComing));
         }
     }
 }
