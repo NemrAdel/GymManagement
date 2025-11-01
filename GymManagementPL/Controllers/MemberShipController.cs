@@ -40,6 +40,7 @@ namespace GymManagementPL.Controllers
             var isCreated = _memberShip.Create(createMemberShip);
             if (!isCreated)
             {
+                LoadDropDown();
                 TempData["ErrorMessage"] = "Failed to create membership.";
                 return View(nameof(Create), createMemberShip);
             }

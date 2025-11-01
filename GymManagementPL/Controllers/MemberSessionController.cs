@@ -75,7 +75,7 @@ namespace GymManagementPL.Controllers
             if (createMember == null)
             {
                 TempData["ErrorMessage"] = "Invalid session data.";
-                return RedirectToAction(nameof(Create));
+                return View();
             }
             if (!ModelState.IsValid)
             {
@@ -89,7 +89,7 @@ namespace GymManagementPL.Controllers
             {
                 LoadDropDownData();
                 TempData["ErrorMessage"] = "Member is already enrolled in this session.";
-                return View(createMember);
+                return RedirectToAction(nameof(Create), new { id = createMember.SessionId });
             }
                 var isCreated = _memberSessionService.Create(createMember);
             if (!isCreated)

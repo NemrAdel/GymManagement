@@ -50,6 +50,9 @@ namespace GymManagementBLL.BusinessServices.Implemintation
 
         public bool Create(CreateMemberShipViewModel membership)
         {
+            var membershipExists = _unitOfWork.MemberShipRepository.GetAllWithMemberAndPlan();
+            if(membershipExists.Any(x=>x.MemberId==membership.MemberId))
+                return false;
             if (membership is null)
                 return false;
             var planid = membership.PlanId;
