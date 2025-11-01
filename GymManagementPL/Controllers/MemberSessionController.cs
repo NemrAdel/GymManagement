@@ -103,17 +103,17 @@ namespace GymManagementPL.Controllers
             return RedirectToAction(nameof(UpComing),new { id=createMember.SessionId});
         }
 
-        public ActionResult Cancel(int id)
+        public ActionResult Cancel(int id,int SessionId)
         {
             var memberSessions = _memberSessionService.GetMemberSessionWithMemberAndSession();
             var memberSession = memberSessions.FirstOrDefault(ms => ms.MemberId == id);
             if (memberSession == null)
             {
                 TempData["ErrorMessage"] = "Member session not found.";
-                return RedirectToAction(nameof(UpComing),new {id=memberSession.SessionId});
+                return RedirectToAction(nameof(UpComing),new {id=SessionId});
             }
-            var cancelMemberSession=_memberSessionService.Cancel(memberSession.Id);
-            return RedirectToAction(nameof(UpComing));
+            var cancelMemberSession=_memberSessionService.Cancel(id);
+            return RedirectToAction(nameof(UpComing),new {id=SessionId});
         }
 
         #region Helper Method

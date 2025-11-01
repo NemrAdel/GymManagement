@@ -108,7 +108,8 @@ namespace GymManagementBLL.BusinessServices.Implemintation
 
         public bool Cancel(int id)
         {
-            var memberSession = _unitOfWork.GetRepository<MemberSessions>().GetById(id);
+            var memberSession = _unitOfWork.MemberSessionRepository.getMemberSessionById(id);
+            Console.WriteLine(memberSession.Members.Name);
             if (memberSession == null)
             {
                 return false;
