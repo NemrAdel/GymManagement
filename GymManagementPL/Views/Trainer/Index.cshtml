@@ -1,4 +1,8 @@
-﻿@model IEnumerable<TrainerViewModel>
+﻿<head>
+    <title>Power fitness | Traines</title>
+</head>
+@model IEnumerable<TrainerViewModel>
+
     <div class="container">
         <main role="main" class="pb-3">
 
@@ -30,7 +34,7 @@
                         <i class="bi bi-plus-lg me-2"></i>Add Trainer
                     </a>
                 </header>
-            @if(Model is not null)
+            @if (Model is not null && Model.Any())
             {
                 
             
