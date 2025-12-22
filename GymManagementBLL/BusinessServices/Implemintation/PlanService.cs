@@ -119,7 +119,7 @@ namespace GymManagementBLL.BusinessServices.Implemintation
         {
             var plan = _unitOfWork.GetRepository<Plan>().GetById(planId);
             if (plan is null||HasActiveMemberShips(planId)) return false;
-            plan.IsActive = plan.IsActive==true?false:true;
+            plan.IsActive = !plan.IsActive;
 
             plan.UpdatedAt = DateTime.Now;
 
