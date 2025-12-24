@@ -30,7 +30,6 @@ namespace GymManagementDAL.Repositories.Implemintation
             if (memebr is null)
                 return null;
             return memebr;
-
         }
     }
 }
