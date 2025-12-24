@@ -31,19 +31,20 @@ namespace GymManagementPL.Controllers
             }
             var sessions = _memberSessionService.GetOnGoingSessionsBySessionId(id);
             Console.WriteLine($"Count is {sessions.Count()}");
+            ViewBag.SessionId = id;
             return View(sessions);
         }
 
         [HttpPost]
-        public ActionResult OnGoing(int id,MemberSessions updateAttendance)
+        public ActionResult OnGoing(int id,int sessionId ,MemberSessions updateAttendance)
         {
             if (id <= 0)
             {
                 TempData["ErrorMessage"] = "Invalid session ID.";
-                return RedirectToAction(nameof(OnGoing), new { id = id }  );
+                return RedirectToAction(nameof(OnGoing), new { id }  );
             }
             var result = _memberSessionService.Attendance(id);
-            return RedirectToAction(nameof(OnGoing), new { id = id });
+            return RedirectToAction(nameof(OnGoing),new { id=sessionId });
         }
 
         public ActionResult UpComing(int id)
