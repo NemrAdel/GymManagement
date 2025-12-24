@@ -40,6 +40,7 @@ namespace GymManagementBLL.BusinessServices.Implemintation
                 var mappedSessionToCreate = _mapper.Map<Session>(createSessionViewModel);// here he know the source 
                 
                 _uinitOfWork.GetRepository<Session>().Add(mappedSessionToCreate);
+                mappedSessionToCreate.CreatedAt = DateTime.Now;
                 return _uinitOfWork.SaveChanges() > 0;
             }
             catch (Exception)
