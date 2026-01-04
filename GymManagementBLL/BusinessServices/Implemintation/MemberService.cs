@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using GymManagementBLL.BusinessServices.Interfaces;
+using GymManagementBLL.EmailService;
 using GymManagementBLL.Helpers;
 using GymManagementBLL.View_Models;
+using GymManagementBLL.View_Models.EmailViewModel;
 using GymManagementDAL.Repositories.Implemintation;
 using GymManagementDAL.Repositories.Interfaces;
 using GymManagementDAL.UnitOfWork;
@@ -20,12 +22,17 @@ namespace GymManagementBLL.BusinessServices.Implemintation
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IAttachmentService _attachmentService;
+        private readonly IEmailService _emailService;
 
-        public MemberService(IUnitOfWork unitOfWork,IMapper mapper,IAttachmentService attachmentService)
+        public MemberService(IUnitOfWork unitOfWork,
+            IMapper mapper,
+            IAttachmentService attachmentService,
+            IEmailService emailService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _attachmentService = attachmentService;
+            _emailService = emailService;
         }
 
 
@@ -132,6 +139,15 @@ namespace GymManagementBLL.BusinessServices.Implemintation
                 _attachmentService.Delete(photoName, "Member");
                 return false;
             }
+            _emailService.SendEmail(new EmailVM
+            {
+                To = createMember.Email,
+                Subject = "Welcome to Our Gym! ⚡💪",
+                Body = $"Dear {createMember.Name},\n\n" +
+                       "Thank you for joining our gym community! We're excited to have you on board.\n\n" +
+                       "Best regards,\n" +
+                       "Gym Management Team 💪⚡"
+            });
             return isCreated;
 
 

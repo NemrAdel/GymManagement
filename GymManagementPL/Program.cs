@@ -1,5 +1,6 @@
 using GymManagementBLL.BusinessServices.Implemintation;
 using GymManagementBLL.BusinessServices.Interfaces;
+using GymManagementBLL.EmailService;
 using GymManagementBLL.Helpers;
 using GymManagementDAL.Data.SeedDara;
 using GymManagementDAL.Repositories.Implemintation;
@@ -57,6 +58,10 @@ namespace GymManagementPL
             builder.Services.AddScoped(typeof(IMemberShipRepository), typeof(MemberShipRepository));
 
             builder.Services.AddScoped(typeof(IMemberSessionRepository), typeof(MemberSessionRepository));
+
+            builder.Services.AddScoped<IEmailService, EmailService>();
+
+            builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 
             builder.Services.AddAutoMapper(X=>X.AddProfile(new MappingProfile()));

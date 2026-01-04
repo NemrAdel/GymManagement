@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GymManagementBLL.BusinessServices.Interfaces;
+using GymManagementBLL.EmailService;
 using GymManagementBLL.View_Models;
 using GymManagementDAL.UnitOfWork;
 using GymManagmentDAL.Models;
@@ -16,11 +17,13 @@ namespace GymManagementBLL.BusinessServices.Implemintation
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IEmailService _emailService;
 
-        public TrainerService(IUnitOfWork unitOfWork,IMapper mapper)
+        public TrainerService(IUnitOfWork unitOfWork,IMapper mapper,IEmailService emailService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _emailService = emailService;
         }
 
 
@@ -71,6 +74,17 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             var trainer = _mapper.Map<CreateTrainerViewModel, Trainer>(createTrainer);
 
             _unitOfWork.GetRepository<Trainer>().Add(trainer);
+
+            _emailService.SendEmail(new View_Models.EmailViewModel.EmailVM
+            {
+                To = trainer.Email, 
+                Subject = "Welcome to Our Gym! ❤️",
+                Body = $"Dear {trainer.Name},\n\n" +
+                       "We are excited to have you join our team of trainers at our gym.⚡💪 \n" +
+                       "Your expertise and dedication will undoubtedly contribute to the success of our members.\n\n" +
+                       "Best regards,\n" +
+                       "Gym Management Team. 💪⚡"
+            });
             return _unitOfWork.SaveChanges() > 0;
         }
 

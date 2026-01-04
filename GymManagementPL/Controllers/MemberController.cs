@@ -1,4 +1,5 @@
 ﻿using GymManagementBLL.BusinessServices.Interfaces;
+using GymManagementBLL.EmailService;
 using GymManagementBLL.View_Models;
 using Microsoft.AspNetCore.Mvc;
 
