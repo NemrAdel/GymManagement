@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using GymManagementBLL.BusinessServices.Interfaces;
+using GymManagementBLL.EmailService;
+using GymManagementBLL.View_Models.EmailViewModel;
 using GymManagementBLL.View_Models.MemberShipVM;
 using GymManagementDAL.Repositories.Implemintation;
 using GymManagementDAL.Repositories.Interfaces;
@@ -18,12 +20,21 @@ namespace GymManagementBLL.BusinessServices.Implemintation
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IEmailService _emailService;
+        private readonly IMemberService _memberService;
+        private readonly IPlanService _planService;
 
-        public MemerShipService(IUnitOfWork unitOfWork,IMapper mapper)
+        public MemerShipService(IUnitOfWork unitOfWork,
+            IMapper mapper,
+            IEmailService emailService,
+            IMemberService memberService,
+            IPlanService planService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-
+            _emailService = emailService;
+            _memberService = memberService;
+            _planService = planService;
         }
 
         public bool Cancel(int id)
@@ -70,6 +81,24 @@ namespace GymManagementBLL.BusinessServices.Implemintation
             var isCreated = _unitOfWork.SaveChanges() > 0;
             if (!isCreated)
                 return false;
+
+
+            var member = _memberService.GetMemberDetails(membership.MemberId);
+            var plan= _planService.GetPlanDetails(membership.PlanId);
+            _emailService.SendEmail(new EmailVM
+            {
+                To = member!.Email,
+                Subject = "Membership Created Successfully ⚡",
+                Body = $"Dear {member.Name},\n\n" +
+                       $"Your membership has been created successfully! ✅\n\n" +
+                       $"Membership Details:\n" +
+                       $"- Plan Price: {plan!.Price}\n" +
+                       $"- Duration Days: {plan.DurationDays}\n" +
+                       $"- End Date: {mappedMemberShip.EndDate.ToShortDateString()}\n\n" +
+                       $"Thank you for choosing our gym! ❤️⚡\n\n" +
+                       $"Best regards,\n" +
+                       $"Gym Management Team ⚡💪"
+            });
             return isCreated;
         }
 
